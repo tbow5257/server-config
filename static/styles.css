@@ -1,3 +1,21 @@
 .header {
-    background-color: #6c757d;
+    background-color: #fff200;
+    height: 100px;
+}
+
+.vr-image {
+    width: 100px;
+    margin: 1% auto;
+}
+
+.ar-image {
+    width: 80px;
+    margin: 1% auto;
+}
+
+.tech-section {
+    background-color: #00ffff;
+}
+
+.list-text {
 }

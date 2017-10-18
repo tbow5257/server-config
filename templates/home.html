@@ -1,40 +1,73 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Immersive Tech Catalog</title>
-    <!-- Bootstrap -->
-    <link href="../static/bootstrap/css/bootstrap.css" rel="stylesheet" media="screen">
-    <link href="../static/styles.css" rel="stylesheet" media="screen">
-</head>
-<body>
+{% extends "base.html" %}
+{% block title %}Immersive Tech Homepage{% endblock %}
+{% block content %}
+
     <div class="container-fluid">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <form class="form-inline mr-2 mr-lg-0">
-                <button class="btn btn-outline-success mr-2 mr-sm-0" type="button">Login</button>
+        <nav class="container">
+            <form class="form-inline mr-lg-0">
+                <button class="btn btn-outline-success mr-sm-0 my-3" type="button" onclick="location.href='/login'" style="margin-left:auto;">Login</button>
             </form>
         </nav>
-        <div class="jumbotron-fluid">
-            <div class="container text-center header">
+        <div class="container mb-3">
+            <div class="d-flex align-items-center justify-content-center header">
                 <h1>Immerse Tech Database</h1>
             </div>
-            <div class="row">
-                <div class="col">
-                    <h2 class="text-center">VR</h2>
-                </div>
-                <div class="col">
-                    <h2 class="text-center">AR</h2>
-                </div>
+        </div>
+            <div class="container">
+                  <div class="row">
+                      <div class="col-md-6">
+                        <div class="tech-section">
+                          <h2 class="text-center my-3 py-4">Virtual Reality</h2>
+                            <div class="row">
+                                <div class="col-md-3 pl-4">
+                                    <div class="img-fluid">
+                                        <img src="../static/images/vr_image.png" class="vr-image" alt="Image of VR Headset">
+                                    </div>
+                                </div>
+                            <div class="col-md-9">
+                               <h3>VR Headsets:</h3>
+                                    <div class="list-text">
+                                        {% for data in vr_headset %}
+                                            <h4>{{data.name}}</h4>
+                                        {% endfor %}
+                                    </div>
+                                <h3>VR Experiences</h3>
+                                <p>blblablablalbalblablalb</p>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                    <div class="col-md-6">
+                        <div class="tech-section">
+                            <h2 class="text-center my-3 py-4">Augmented Reality</h2>
+                            <div class="row">
+                                <div class="col-md-3 pl-5">
+                                    <div class="img-fluid">
+                                        <img src="../static/images/ar_images.png" class="ar-image" alt="Image of VR Headset">
+                                    </div>
+                                </div>
+                            <div class="col-md-9">
+                               <h3>AR Headsets:</h3>
+                                {% for data in vr_headset %}
+                                    <h4>{{data.name}}</h4>
+                                {% endfor %}
+                                <h3>VR Experiences</h3>
+                                <p>blblablablalbalblablalb</p>
+                            </div>
+                            </div>
+                    </div>
+                  </div>
             </div>
-            <div class="row">
-                <div class="col align-self-center">
-                    <h2 class="text-center">Create new</h2>
-                </div>
             </div>
+
+                <div class="row">
+                    <div class="col align-self-center">
+                        <h2 class="text-center">Create new</h2>
+                    </div>
+                </div>
         </div>
             <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
             <script src="../static/bootstrap/js/bootstrap.min.js"></script>
     </div>
-</body>
-</html>
+{% endblock %}}
