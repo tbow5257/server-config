@@ -209,13 +209,30 @@ def newEntry():
 def editHeadset(headset_type, headset_id):
     if 'username' not in login_session:
         return redirect('/login')
-    headset = session.query(Headset).filter_by(id=headset_id).one()
-    print(headset)
-    return render_template('edit-headset.html', headset = headset)
+    editedHeadset = session.query(Headset).filter_by(id=headset_id).one()
+    if request.method == 'POST':
+        if request.form['type']:
+            editedHeadset.type = request.form['type']
+        if request.form['name']:
+            editedHeadset.name = request.form['name']
+        if request.form['price']:
+            editedHeadset.price = request.form['price']
+        if request.form['FOV']:
+            editedHeadset.FOV = request.form['FOV']
+        if request.form['additional_components']:
+            editedHeadset.additional_componenets = request.form['additional_components']
+        session.add(editedHeadset)
+        session.commit()
+        flash('Headset Edited Yo')
+        return redirect(url_for('catalogHome'))
 
-@app.route('/vr/headset/')
-def vrHeadset():
-    return render_template('vr-headset.html')
+    else:
+        print(editedHeadset)
+        return render_template('edit-headset.html', headset = editedHeadset)
+
+@app.route('/experience/<int:experience_id>/edit', methods=['GET', 'POST'])
+def editExperience(experience_id):
+    return render_template('edit-experience.html')
 
 @app.route('/vr/new/')
 def vrEntryNew():

@@ -8,18 +8,35 @@
 				<div class="form-group">
 					<label for="name">Name:</label>
 					<input type ="text" maxlength="100" class="form-control" name="name" value="{{headset.name }}">
+                    <br>
+
+                    <label for="course">Type:</label>
+					<div class="radio">
+					  <label>
+					    <input type="radio" name="type" id="type1" value="VR" {% if headset.type == "VR"%}checked{%endif%}>VR
+					  </label>
+					</div>
+					<div class="radio">
+					  <label>
+					    <input type="radio" name="type" id="type2" value="AR" {% if headset.type == "AR"%}checked{%endif%}>AR
+					  </label>
+                    </div>
 
                     <br>
                     <label for="description">Price:</label>
-					<textarea class="form-control" maxlength="8" rows="1" name="description">{{headset.price}}</textarea>
+					<textarea class="form-control" maxlength="8" rows="1" name="price">{{headset.price}}</textarea>
 
-                     <br>
+                    <br>
                     <label for="description">FOV:</label>
-					<textarea class="form-control" maxlength="8" rows="1" name="description">{{headset.FOV}}</textarea>
+					<textarea class="form-control" maxlength="8" rows="1" name="FOV">{{headset.FOV}}</textarea>
 
                     <br>
                     <label for="description">Additional Components:</label>
-					<textarea class="form-control" maxlength="8" rows="1" name="description">{{headset.additional_components}}</textarea>
+					<textarea class="form-control" maxlength="8" rows="1" name="additional_components">{{headset.additional_components}}</textarea>
+                    <br>
+
+                    <button type="submit" class="btn btn-default" id="submit" type="submit">
+                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>Save</button>
 
                 </div>
             </form>

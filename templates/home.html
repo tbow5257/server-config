@@ -39,7 +39,7 @@
                                             {% for thing in headset %}
                                                  {% if entry.Headset_id == thing.id %}
                                                    {% if thing.type == "VR"  %}
-                                                       <h4>{{entry.name}}</h4>
+                                                       <h4>{{entry.name}} - <a href='{{ url_for('editExperience', experience_id = entry.Headset_id) }}'>Edit</a></h4>
                                                    {% endif %}
                                                 {% endif %}
                                             {% endfor %}
