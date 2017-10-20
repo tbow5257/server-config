@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from database_setup import Base, VRHeadset, VRExperience, User
+from database_setup import Base, Headset, Experience, User
 
 engine = create_engine('sqlite:///immersivecatalog.db')
 # Bind the engine to the metadata of the Base class so that the
@@ -24,19 +24,24 @@ User1 = User(name="Developer Mcgeeface", email="tinnyTim@udacity.com",
 session.add(User1)
 session.commit()
 
-#VR Headset example
-vrheadset1 = VRHeadset(user_id=1, name="GeezerVR", price=30000, FOV=290, additional_components=None)
+#Headset examples
+headset1 = Headset(user_id=1, type="VR", name="Oculus Rift", price=30000, FOV=100, additional_components="Base stations")
 
-session.add(vrheadset1)
+session.add(headset1)
 session.commit()
 
-vrheadset2 = VRHeadset(user_id=1, name="Wtf", price=10, FOV=10, additional_components="maybe theres somethin")
+headset2 = Headset(user_id=1, type="AR", name="Samsung Galaxy", price=700, FOV=90, additional_components=None)
 
-session.add(vrheadset2)
+session.add(headset2)
 session.commit()
 
-vrexperience1 = VRExperience(user_id=1, name="lolwut", description="somethin somethin", price=333, VRHeadset=vrheadset1)
+#Experience examples
+experience1 = Experience(user_id=1, name="Space Pirate Trainer", description="somethin somethin", price=29.99, Headset=headset1)
 
-session.add(vrexperience1)
+session.add(experience1)
 session.commit()
 
+experience2 = Experience(user_id=1, name="Augment", description="yo mamama weo fpawef kjawe fpaw efpajw efjoiapejfpew", price=333, Headset=headset2)
+
+session.add(experience2)
+session.commit()

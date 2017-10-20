@@ -27,16 +27,28 @@
                             <div class="col-md-9">
                                <h3>VR Headsets:</h3>
                                     <div class="list-text">
-                                        {% for data in vr_headset %}
-                                            <h4>{{data.name}}</h4>
+                                        {% for thing in headset %}
+                                            {% if thing.type == "VR" %}
+                                              <h4>{{thing.name}} - <a href='{{ url_for('editHeadset', headset_type = thing.type, headset_id = thing.id) }}'>Edit</a></h4>
+                                            {% endif %}
                                         {% endfor %}
                                     </div>
                                 <h3>VR Experiences</h3>
-                                <p>blblablablalbalblablalb</p>
+                                    <div class="list-text">
+                                        {% for entry in experience %}
+                                            {% for thing in headset %}
+                                                 {% if entry.Headset_id == thing.id %}
+                                                   {% if thing.type == "VR"  %}
+                                                       <h4>{{entry.name}}</h4>
+                                                   {% endif %}
+                                                {% endif %}
+                                            {% endfor %}
+                                        {% endfor %}
                             </div>
                             </div>
                         </div>
                         </div>
+                      </div>
                     <div class="col-md-6">
                         <div class="tech-section">
                             <h2 class="text-center my-3 py-4">Augmented Reality</h2>
@@ -48,8 +60,14 @@
                                 </div>
                             <div class="col-md-9">
                                <h3>AR Headsets:</h3>
-                                {% for data in vr_headset %}
-                                    <h4>{{data.name}}</h4>
+                                {% for entry in experience %}
+                                    {% for thing in headset %}
+                                        {% if entry.Headset_id == thing.id %}
+                                            {% if thing.type == "AR"  %}
+                                                <h4>{{entry.name}}</h4>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
                                 {% endfor %}
                                 <h3>VR Experiences</h3>
                                 <p>blblablablalbalblablalb</p>

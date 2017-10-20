@@ -1,4 +1,3 @@
-import sys
 
 from sqlalchemy import Column, ForeignKey, Integer, String
 
@@ -10,9 +9,20 @@ from sqlalchemy import create_engine
 
 Base = declarative_base()
 
+class User(Base):
+    __tablename__ = 'user'
 
-class VRHeadset(Base):
-    __tablename__ = 'vr_headset'
+    id = Column(Integer, primary_key=True)
+    name = Column(String(250), nullable=False)
+    email = Column(String(250), nullable=False)
+    picture = Column(String(250))
+
+class Headset(Base):
+    __tablename__ = 'headset'
+    type = Column(
+        String(2), nullable=False
+    )
+
     name = Column(
         String(80), nullable=False
     )
@@ -33,9 +43,16 @@ class VRHeadset(Base):
         Integer, primary_key=True
     )
 
+    user_id = Column(
+        Integer, ForeignKey('user.id')
+    )
 
-class VRExperience(Base):
-    __tablename__ = 'vr_experience'
+    user = relationship(
+        User
+    )
+
+class Experience(Base):
+    __tablename__ = 'experience'
 
     name = Column(
         String(80), nullable=False
@@ -49,11 +66,19 @@ class VRExperience(Base):
 
     price = Column(String(8))
 
-    VRHeadset_id = Column(
-        Integer, ForeignKey('vr_headset.id')
+    Headset_id = Column(
+        Integer, ForeignKey('headset.id')
     )
 
-    restaurant = relationship(VRHeadset)
+    Headset = relationship(Headset)
+
+    user_id = Column(
+        Integer, ForeignKey('user.id')
+    )
+
+    user = relationship(
+        User
+    )
 
     @property
     def serialize(self):
@@ -64,6 +89,8 @@ class VRExperience(Base):
             'id' : self.id,
             'price' : self.price,
         }
+
+
 
 engine = create_engine('sqlite:///immersivecatalog.db')
 

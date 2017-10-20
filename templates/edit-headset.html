@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Edit Headset{% endblock %}
+{% block content %}
+
+    <div class="container-fluid">
+        <div class="col-md-6 col-md-offset-1 padding-top">
+            <form action="#" method = "post">
+				<div class="form-group">
+					<label for="name">Name:</label>
+					<input type ="text" maxlength="100" class="form-control" name="name" value="{{headset.name }}">
+
+                    <br>
+                    <label for="description">Price:</label>
+					<textarea class="form-control" maxlength="8" rows="1" name="description">{{headset.price}}</textarea>
+
+                     <br>
+                    <label for="description">FOV:</label>
+					<textarea class="form-control" maxlength="8" rows="1" name="description">{{headset.FOV}}</textarea>
+
+                    <br>
+                    <label for="description">Additional Components:</label>
+					<textarea class="form-control" maxlength="8" rows="1" name="description">{{headset.additional_components}}</textarea>
+
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+{% endblock %}}

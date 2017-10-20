@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-#from database_setup import Base, Restaurant, MenuItem
+from database_setup import Base, Headset, Experience, User
 
 #for google login
 from flask import session as login_session
@@ -23,21 +23,23 @@ CLIENT_ID = json.loads(
 APPLICATION_NAME = "Immersive Tech Application"
 
 
-# engine = create_engine('sqlite:///immersivecatalog.db')
-# Base.metadata.bind = engine
-# DBSession = sessionmaker(bind=engine)
-# session = DBSession()
+engine = create_engine('sqlite:///immersivecatalog.db')
+Base.metadata.bind = engine
+DBSession = sessionmaker(bind=engine)
+session = DBSession()
 
 @app.route('/')
 @app.route('/home')
 def catalogHome():
-    return render_template('home.html')
+    headset = session.query(Headset)
+    experience = session.query(Experience)
+    return render_template('home.html', headset = headset, experience = experience)
 
 @app.route('/login')
 def loginPage():
     state = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in xrange(32)) 
     login_session['state'] = state
-    return render_template('login.html', STATE = login_session['state'])
+    return render_template('login.html', STATE = state)
 
 
 @app.route('/gconnect', methods=['POST'])
@@ -111,6 +113,14 @@ def gconnect():
     login_session['username'] = data['name']
     login_session['picture'] = data['picture']
     login_session['email'] = data['email']
+    # ADD PROVIDER TO LOGIN SESSION
+    login_session['provider'] = 'google'
+
+    # see if user exists, if it doesn't make a new one
+    user_id = getUserID(data["email"])
+    if not user_id:
+        user_id = createUser(login_session)
+    login_session['user_id'] = user_id
 
     output = ''
     output += '<h1>Welcome, '
@@ -122,6 +132,28 @@ def gconnect():
     flash("you are now logged in as %s" % login_session['username'])
     print "done!"
     return output
+
+    # User Helper Functions
+
+
+def createUser(login_session):
+    newUser = User(name=login_session['username'], email=login_session[
+        'email'], picture=login_session['picture'])
+    session.add(newUser)
+    session.commit()
+    user = session.query(User).filter_by(email=login_session['email']).one()
+    return user.id
+
+def getUserInfo(user_id):
+    user = session.query(User).filter_by(id=user_id).one()
+    return user
+
+def getUserID(email):
+    try:
+        user = session.query(User).filter_by(email=email).one()
+        return user.id
+    except:
+        return None
 
 
     # DISCONNECT - Revoke a current user's token and reset their login_session
@@ -158,9 +190,44 @@ def gdisconnect():
         return response
 
 
-@app.route('/new')
+@app.route('/new', methods=['GET', 'POST'])
 def newEntry():
-    return render_template('new.html')
+    if 'username' not in login_session:
+        return redirect('/login')
+    if request.method == 'POST':
+        newVRHeadset = VRHeadset(
+            name=request.form['name'], user_id=login_session['user_id'])
+        session.add(newVRHeadset)
+        flash('New VRHeadset %s Successfully Created' % newVRHeadset.name)
+        session.commit()
+        return redirect('/home')
+    else:
+        print(login_session['user_id'])
+        return render_template('new.html')
+
+@app.route('/headset/<string:headset_type>/<int:headset_id>/edit', methods=['GET', 'POST'])
+def editHeadset(headset_type, headset_id):
+    if 'username' not in login_session:
+        return redirect('/login')
+    headset = session.query(Headset).filter_by(id=headset_id).one()
+    print(headset)
+    return render_template('edit-headset.html', headset = headset)
+
+@app.route('/vr/headset/')
+def vrHeadset():
+    return render_template('vr-headset.html')
+
+@app.route('/vr/new/')
+def vrEntryNew():
+    return render_template('vr-new.html')
+
+@app.route('/vr/edit/')
+def vrEntryEdit():
+    return render_template('edit-headset.html')
+
+@app.route('/vr/delete/')
+def vrEntryDelete():
+    return render_template('vr-delete.html')
 
 @app.route('/ar')
 def arHome():
@@ -178,21 +245,7 @@ def arEntryEdit():
 def arEntryDelete():
     return render_template('ar-edit.html')
 
-@app.route('/vr')
-def vrHome():
-    return render_template('vr.html')
 
-@app.route('/vr/new/')
-def vrEntryNew():
-    return render_template('vr-new.html')
-
-@app.route('/vr/edit/')
-def vrEntryEdit():
-    return render_template('vr-edit.html')
-
-@app.route('/vr/delete/')
-def vrEntryDelete():
-    return render_template('vr-delete.html')
 
 if __name__ == '__main__':
     app.secret_key = 'HrGlNQUEoCS_6If9--O4__N1'
