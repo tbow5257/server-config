@@ -7,20 +7,20 @@
             <form action="#" method = "post">
 				<div class="form-group">
 					<label for="name">Name:</label>
-					<input type ="text" maxlength="100" class="form-control" name="name" value="{{experience.name}}">
+					<input type ="text" maxlength="100" class="form-control" name="name" value="{{editedExperience.name}}">
 
                     <br>
                     <label for="description">Description:</label>
-					<textarea class="form-control" maxlength="250" rows="3" name="description">{{experience.description}}</textarea>
+					<textarea class="form-control" maxlength="250" rows="3" name="description">{{editedExperience.description}}</textarea>
 
                     <br>
                     <label for="price">Price:</label>
-					<textarea class="form-control" maxlength="8" rows="1" name="price">{{experience.price}}</textarea>
+					<textarea class="form-control" maxlength="8" rows="1" name="price">{{editedExperience.price}}</textarea>
 
                     <br>
                     <label for="headset-compatible">Works with:</label>
                     {% for device in headset %}
-                        {% if experience.Headset_id == device.id %}
+                        {% if editedExperience.Headset_id == device.id %}
 					<textarea class="form-control" maxlength="8" rows="1" name="headset-compatible">{{device.name}}</textarea>
                         {% endif %}
                     {% endfor %}

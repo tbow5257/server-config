@@ -235,15 +235,19 @@ def editExperience(experience_id):
         return redirect('/login')
     headset = session.query(Headset)
     editedExperience = session.query(Experience).filter_by(id=experience_id).one()
-    if request.form['name']:
-        editedExperience.name = request.form['name']
-    if request.form['description']:
-        editedExperience.description = request.form['description']
-    if request.form['price']:
-        editedExperience.price = request.form['price']
+    if request.method == 'POST':
+        if request.form['name']:
+            editedExperience.name = request.form['name']
+        if request.form['description']:
+            editedExperience.description = request.form['description']
+        if request.form['price']:
+            editedExperience.price = request.form['price']
+        session.add(editedExperience)
+        session.commit()
+        flash('Experience Edited Yo')
 
     else:
-        return render_template('edit-experience.html', headset=headset, experience=editedExperience)
+        return render_template('edit-experience.html', editedExperience = editedExperience, headset = headset)
 
 @app.route('/vr/new/')
 def vrEntryNew():
