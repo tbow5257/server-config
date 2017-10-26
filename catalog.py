@@ -247,7 +247,7 @@ def editExperience(experience_id):
         flash('Experience Edited Yo')
 
     else:
-        return render_template('edit-experience.html', editedExperience = editedExperience, headset = headset)
+        return render_template('edit-experience.html', editedExperience = editedExperience,headset = headset)
 
 @app.route('/vr/new/')
 def vrEntryNew():

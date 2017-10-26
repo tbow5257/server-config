@@ -1,13 +1,19 @@
 
-from sqlalchemy import Column, ForeignKey, Integer, String
+from sqlalchemy import Column, ForeignKey, Integer, String, Table
 
 from sqlalchemy.ext.declarative import declarative_base
 
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, backref
 
 from sqlalchemy import create_engine
 
 Base = declarative_base()
+
+compatible = Table('compatible',
+                   Base.metadata,
+        Column('headset_id', Integer, ForeignKey('headset.id')),
+        Column('experience_id', Integer, ForeignKey('experience.id'))
+    )
 
 class User(Base):
     __tablename__ = 'user'
@@ -51,6 +57,7 @@ class Headset(Base):
         User
     )
 
+
 class Experience(Base):
     __tablename__ = 'experience'
 
@@ -70,7 +77,7 @@ class Experience(Base):
         Integer, ForeignKey('headset.id')
     )
 
-    Headset = relationship(Headset)
+    Headset = relationship(Headset, secondary=compatible, backref = backref('runs_on', lazy = 'dynamic'))
 
     user_id = Column(
         Integer, ForeignKey('user.id')

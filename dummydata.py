@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from database_setup import Base, Headset, Experience, User
+from database_setup import *
 
 engine = create_engine('sqlite:///immersivecatalog.db')
 # Bind the engine to the metadata of the Base class so that the
@@ -36,12 +36,12 @@ session.add(headset2)
 session.commit()
 
 #Experience examples
-experience1 = Experience(user_id=1, name="Space Pirate Trainer", description="somethin somethin", price=29.99, Headset=headset1)
+experience1 = Experience(user_id=1, name="Space Pirate Trainer", description="somethin somethin", price=29.99, Headset=[headset1,headset2])
 
 session.add(experience1)
 session.commit()
 
-experience2 = Experience(user_id=1, name="Augment", description="yo mamama weo fpawef kjawe fpaw efpajw efjoiapejfpew", price=333, Headset=headset2)
+experience2 = Experience(user_id=1, name="Augment", description="yo mamama weo fpawef kjawe fpaw efpajw efjoiapejfpew", price=333, Headset=[headset2])
 
 session.add(experience2)
 session.commit()
