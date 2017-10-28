@@ -1,14 +1,12 @@
 
 from sqlalchemy import Column, ForeignKey, Integer, String, Table
-
 from sqlalchemy.ext.declarative import declarative_base
-
 from sqlalchemy.orm import relationship, backref
-
 from sqlalchemy import create_engine
 
 Base = declarative_base()
 
+#Table to provide many to many model for Headsets and Experiences
 compatible = Table('compatible',
                    Base.metadata,
         Column('headset_id', Integer, ForeignKey('headset.id')),
@@ -73,11 +71,10 @@ class Experience(Base):
 
     price = Column(String(8))
 
-    Headset_id = Column(
-        Integer, ForeignKey('headset.id')
+    Headset = relationship(
+        Headset, secondary=compatible,
+        backref = backref('runs_on', lazy = 'dynamic')
     )
-
-    Headset = relationship(Headset, secondary=compatible, backref = backref('runs_on', lazy = 'dynamic'))
 
     user_id = Column(
         Integer, ForeignKey('user.id')
@@ -86,18 +83,6 @@ class Experience(Base):
     user = relationship(
         User
     )
-
-    @property
-    def serialize(self):
-        #returns object data in easliy serializeable format
-        return {
-            'name' : self.name,
-            'description' : self.description,
-            'id' : self.id,
-            'price' : self.price,
-        }
-
-
 
 engine = create_engine('sqlite:///immersivecatalog.db')
 

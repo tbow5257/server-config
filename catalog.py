@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from database_setup import Base, Headset, Experience, User
+from database_setup import Base, Headset, Experience, User, compatible
 
 #for google login
 from flask import session as login_session
@@ -33,7 +33,8 @@ session = DBSession()
 def catalogHome():
     headset = session.query(Headset)
     experience = session.query(Experience)
-    return render_template('home.html', headset = headset, experience = experience)
+    Compatible = session.query(compatible)
+    return render_template('home.html', headset = headset, experience = experience, compatible = Compatible)
 
 @app.route('/login')
 def loginPage():
