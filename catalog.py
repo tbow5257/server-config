@@ -31,10 +31,10 @@ session = DBSession()
 @app.route('/')
 @app.route('/home')
 def catalogHome():
-    headset = session.query(Headset)
-    experience = session.query(Experience)
-    Compatible = session.query(compatible)
-    return render_template('home.html', headset = headset, experience = experience, compatible = Compatible)
+    headset = session.query(Headset).all()
+    experience = session.query(Experience).all()
+
+    return render_template('home.html', headset = headset, experience = experience)
 
 @app.route('/login')
 def loginPage():

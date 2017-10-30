@@ -59,6 +59,10 @@ class Headset(Base):
 class Experience(Base):
     __tablename__ = 'experience'
 
+    type = Column(
+        String(2), nullable=False
+    )
+
     name = Column(
         String(80), nullable=False
     )

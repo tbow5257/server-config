@@ -52,32 +52,32 @@ session.add(headset4)
 session.commit()
 
 #Experience examples
-experience1 = Experience(user_id=1, name="Space Pirate Trainer", description="Sci-fi shooting gallery", price=14.99, Headset=[headset1,headset3])
+experience1 = Experience(user_id=1, type="VR", name="Space Pirate Trainer", description="Sci-fi shooting gallery", price=14.99, Headset=[headset1,headset3])
 
 session.add(experience1)
 session.commit()
 
-experience2 = Experience(user_id=1, name="Augment", description="Visualize 3D models in AR", price=None, Headset=[headset2])
+experience2 = Experience(user_id=1, type="AR", name="Augment", description="Visualize 3D models in AR", price=None, Headset=[headset2])
 
 session.add(experience2)
 session.commit()
 
-experience3 = Experience(user_id=2, name="Facebook Spaces", description="Hangout with friends in a virtual environment", price=None, Headset=[headset1])
+experience3 = Experience(user_id=2, type="VR", name="Facebook Spaces", description="Hangout with friends in a virtual environment", price=None, Headset=[headset1])
 
 session.add(experience3)
 session.commit()
 
-experience4 = Experience(user_id=1, name="Snapchat", description="Share video and pictures with friends", price=None, Headset=[headset2,headset4])
+experience4 = Experience(user_id=1, type="AR", name="Snapchat", description="Share video and pictures with friends", price=None, Headset=[headset2,headset4])
 
 session.add(experience4)
 session.commit()
 
-experience5 = Experience(user_id=1, name="Accounting", description="Justin Roiland silliness", price=None, Headset=[headset3])
+experience5 = Experience(user_id=1, type="VR", name="Accounting", description="Justin Roiland silliness", price=None, Headset=[headset3])
 
 session.add(experience5)
 session.commit()
 
-experience6 = Experience(user_id=1, name="IKEA Place", description="Look at 3D models of furniture in your home", price=None, Headset=[headset4])
+experience6 = Experience(user_id=1, type="AR", name="IKEA Place", description="Look at 3D models of furniture in your home", price=None, Headset=[headset4])
 
 session.add(experience6)
 session.commit()

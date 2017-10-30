@@ -35,19 +35,11 @@
                                     </div>
                                 <h3>VR Experiences</h3>
                                     <div class="list-text">
-                                        {% for list in compatible %}
-                                            {% for program in experience %}
-                                                {% for device in Headset %}
-                                                    {% if device.id == list.headset_id %}
-                                                        {% if device.type == "VR" %}
-                                                           {% if program == name.id %}
-                                                       <h4>{{name.name}} - <a href='{{ url_for('editExperience', experience_id = entry.id) }}'>Edit</a></h4>
-                                                           {% endif %}
-                                                       {% endif %}
-                                                   {% endif %}
-                                                {% endfor %}
-                                            {% endfor %}
-                                        {% endfor %}
+                                    {% for program in experience %}
+                                        {% if program.type == "VR" %}
+                                            <h4>{{program.name}} - <a href='{{ url_for('editExperience', experience_id = program.id) }}'>Edit</a></h4>
+                                        {% endif %}
+                                    {% endfor %}
                             </div>
                             </div>
                         </div>
@@ -64,17 +56,17 @@
                                 </div>
                             <div class="col-md-9">
                                <h3>AR Headsets:</h3>
-                                {% for entry in experience %}
-                                    {% for device in headset %}
-                                        {% if entry.Headset_id == device.id %}
-                                            {% if device.type == "AR"  %}
-                                                <h4>{{entry.name}}</h4>
-                                            {% endif %}
+                                   {% for device in headset %}
+                                       {% if device.type == "AR" %}
+                                           <h4>{{device.name}} - <a href='{{ url_for('editHeadset', headset_type = device.type, headset_id = device.id) }}'>Edit</a></h4>
+                                       {% endif %}
+                                   {% endfor %}
+                                <h3>AR Experiences</h3>
+                                    {% for program in experience %}
+                                        {% if program.type == "AR" %}
+                                            <h4>{{program.name}} - <a href='{{ url_for('editExperience', experience_id = program.id) }}'>Edit</a></h4>
                                         {% endif %}
                                     {% endfor %}
-                                {% endfor %}
-                                <h3>VR Experiences</h3>
-                                <p>blblablablalbalblablalb</p>
                             </div>
                             </div>
                     </div>
