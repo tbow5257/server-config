@@ -189,22 +189,6 @@ def gdisconnect():
         response.headers['Content-Type'] = 'application/json'
         return response
 
-
-@app.route('/new', methods=['GET', 'POST'])
-def newEntry():
-    if 'username' not in login_session:
-        return redirect('/login')
-    if request.method == 'POST':
-        newVRHeadset = VRHeadset(
-            name=request.form['name'], user_id=login_session['user_id'])
-        session.add(newVRHeadset)
-        flash('New VRHeadset %s Successfully Created' % newVRHeadset.name)
-        session.commit()
-        return redirect('/home')
-    else:
-        print(login_session['user_id'])
-        return render_template('new-headset.html')
-
 @app.route('/headset/<string:headset_type>/<int:headset_id>/edit', methods=['GET', 'POST'])
 def editHeadset(headset_type, headset_id):
     if 'username' not in login_session:
@@ -251,9 +235,22 @@ def editExperience(experience_id):
     else:
         return render_template('edit-experience.html', editedExperience = editedExperience,headset = headset)
 
-@app.route('/headset/new/')
+@app.route('/headset/new/', methods=['GET', 'POST'])
 def newHeadset():
-    return render_template('new-headset.html')
+    if 'username' not in login_session:
+        return redirect('/login')
+    if request.method == 'POST':
+        newHeadset = Headset(
+            name=request.form['name'], type=request.form['type'],
+            price=request.form['price'], FOV=request.form['FOV'],
+            additional_components=request.form['additional_components'],
+            user_id=login_session['user_id'])
+        session.add(newHeadset)
+        flash('New Headset %s Successfully Created' % newHeadset.name)
+        session.commit()
+        return redirect(url_for('catalogHome'))
+    else:
+        return render_template('new-headset.html')
 
 @app.route('/vr/edit/')
 def vrEntryEdit():
