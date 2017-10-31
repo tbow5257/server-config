@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from database_setup import Base, Headset, Experience, User, compatible
+from database_setup import Base, Headset, Experience, User
 
 #for google login
 from flask import session as login_session
@@ -33,7 +33,6 @@ session = DBSession()
 def catalogHome():
     headset = session.query(Headset).all()
     experience = session.query(Experience).all()
-
     return render_template('home.html', headset = headset, experience = experience)
 
 @app.route('/login')
@@ -204,7 +203,7 @@ def newEntry():
         return redirect('/home')
     else:
         print(login_session['user_id'])
-        return render_template('new.html')
+        return render_template('new-headset.html')
 
 @app.route('/headset/<string:headset_type>/<int:headset_id>/edit', methods=['GET', 'POST'])
 def editHeadset(headset_type, headset_id):
@@ -221,7 +220,7 @@ def editHeadset(headset_type, headset_id):
         if request.form['FOV']:
             editedHeadset.FOV = request.form['FOV']
         if request.form['additional_components']:
-            editedHeadset.additional_componenets = request.form['additional_components']
+            editedHeadset.additional_components = request.form['additional_components']
         session.add(editedHeadset)
         session.commit()
         flash('Headset Edited Yo')
@@ -239,6 +238,8 @@ def editExperience(experience_id):
     if request.method == 'POST':
         if request.form['name']:
             editedExperience.name = request.form['name']
+        if request.form['type']:
+            editedExperience.type = request.form['type']
         if request.form['description']:
             editedExperience.description = request.form['description']
         if request.form['price']:
@@ -246,13 +247,13 @@ def editExperience(experience_id):
         session.add(editedExperience)
         session.commit()
         flash('Experience Edited Yo')
-
+        return redirect(url_for('catalogHome'))
     else:
         return render_template('edit-experience.html', editedExperience = editedExperience,headset = headset)
 
-@app.route('/vr/new/')
-def vrEntryNew():
-    return render_template('vr-new.html')
+@app.route('/headset/new/')
+def newHeadset():
+    return render_template('new-headset.html')
 
 @app.route('/vr/edit/')
 def vrEntryEdit():

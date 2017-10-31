@@ -6,13 +6,6 @@ from sqlalchemy import create_engine
 
 Base = declarative_base()
 
-#Table to provide many to many model for Headsets and Experiences
-compatible = Table('compatible',
-                   Base.metadata,
-        Column('headset_id', Integer, ForeignKey('headset.id')),
-        Column('experience_id', Integer, ForeignKey('experience.id'))
-    )
-
 class User(Base):
     __tablename__ = 'user'
 
@@ -74,11 +67,6 @@ class Experience(Base):
     description = Column(String(250))
 
     price = Column(String(8))
-
-    Headset = relationship(
-        Headset, secondary=compatible,
-        backref = backref('runs_on', lazy = 'dynamic')
-    )
 
     user_id = Column(
         Integer, ForeignKey('user.id')
