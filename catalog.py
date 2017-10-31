@@ -189,7 +189,9 @@ def gdisconnect():
         response.headers['Content-Type'] = 'application/json'
         return response
 
-@app.route('/headset/<string:headset_type>/<int:headset_id>/edit', methods=['GET', 'POST'])
+
+
+@app.route('/<string:headset_type>/headset/<int:headset_id>/edit', methods=['GET', 'POST'])
 def editHeadset(headset_type, headset_id):
     if 'username' not in login_session:
         return redirect('/login')
@@ -213,11 +215,10 @@ def editHeadset(headset_type, headset_id):
     else:
         return render_template('edit-headset.html', headset = editedHeadset)
 
-@app.route('/experience/<int:experience_id>/edit', methods=['GET', 'POST'])
-def editExperience(experience_id):
+@app.route('/<string:headset_type>/experience/<int:experience_id>/edit', methods=['GET', 'POST'])
+def editExperience(headset_type, experience_id):
     if 'username' not in login_session:
         return redirect('/login')
-    headset = session.query(Headset)
     editedExperience = session.query(Experience).filter_by(id=experience_id).one()
     if request.method == 'POST':
         if request.form['name']:
@@ -233,7 +234,7 @@ def editExperience(experience_id):
         flash('Experience Edited Yo')
         return redirect(url_for('catalogHome'))
     else:
-        return render_template('edit-experience.html', editedExperience = editedExperience,headset = headset)
+        return render_template('edit-experience.html', experience = editedExperience,)
 
 @app.route('/headset/new/', methods=['GET', 'POST'])
 def newHeadset():
@@ -252,17 +253,53 @@ def newHeadset():
     else:
         return render_template('new-headset.html')
 
-@app.route('/vr/edit/')
-def vrEntryEdit():
-    return render_template('edit-headset.html')
+@app.route('/experience/new/', methods=['GET', 'POST'])
+def newExperience():
+    if 'username' not in login_session:
+        return redirect('/login')
+    if request.method == 'POST':
+        newExperience = Experience(
+            name=request.form['name'], type=request.form['type'],
+            description=request.form['description'],
+            price=request.form['price'], user_id=login_session['user_id'])
+        session.add(newExperience)
+        flash('New Experience %s Successfully Created' % newExperience.name)
+        session.commit()
+        return redirect(url_for('catalogHome'))
+    else:
+        return render_template('new-experience.html')
 
-@app.route('/vr/delete/')
-def vrEntryDelete():
-    return render_template('vr-delete.html')
+@app.route('/<headset_type>/headset/<int:headset_id>/delete/', methods=['GET', 'POST'])
+def deleteHeadset(headset_id, headset_type):
+    headsetToDelete = session.query(
+        Headset).filter_by(id=headset_id).one()
+    if 'username' not in login_session:
+        return redirect('/login')
+    # if HeadsetToDelete.user_id != login_session['user_id']:
+    #    return "<script>function myFunction() {alert('You are not authorized to delete this restaurant. Please create your own restaurant in order to delete.');}</script><body onload='myFunction()'>"
+    if request.method == 'POST':
+        session.delete(headsetToDelete)
+        flash('%s Successfully Deleted' % headsetToDelete.name)
+        session.commit()
+        return redirect(url_for('catalogHome'))
 
-@app.route('/ar')
-def arHome():
-    return render_template('ar.html')
+    return render_template('delete-headset.html', headsetToDelete=headsetToDelete)
+
+@app.route('/<experience_type>/experience/<int:experience_id>/delete/', methods=['GET', 'POST'])
+def deleteExperience(experience_type, experience_id):
+    experienceToDel = session.query(
+        Experience).filter_by(id=experience_id).one()
+    if 'username' not in login_session:
+        return redirect('/login')
+    # if HeadsetToDelete.user_id != login_session['user_id']:
+    #    return "<script>function myFunction() {alert('You are not authorized to delete this restaurant. Please create your own restaurant in order to delete.');}</script><body onload='myFunction()'>"
+    if request.method == 'POST':
+        session.delete(experienceToDel)
+        flash('%s Successfully Deleted' % experienceToDel.name)
+        session.commit()
+        return redirect(url_for('catalogHome'))
+    else:
+        return render_template('delete-experience.html', experienceToDel=experienceToDel)
 
 @app.route('/ar/new/')
 def arEntryNew():
