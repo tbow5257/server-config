@@ -189,7 +189,10 @@ def gdisconnect():
         response.headers['Content-Type'] = 'application/json'
         return response
 
-
+@app.route('/<string:headset_type>/')
+def headsetCatalog(headset_type):
+    headset = session.query(Headset).all()
+    return render_template('headset-catalog.html', headset=headset)
 
 @app.route('/<string:headset_type>/headset/<int:headset_id>/edit', methods=['GET', 'POST'])
 def editHeadset(headset_type, headset_id):

@@ -2,13 +2,35 @@
 {% block title %}Immersive Tech Homepage{% endblock %}
 {% block content %}
 
-    <div class="container-fluid">
-        <nav class="container">
-            <form class="form-inline mr-lg-0">
-                <button class="btn btn-outline-success mr-sm-0 my-3" type="button" onclick="location.href='/login'" style="margin-left:auto;">Login</button>
-            </form>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <!-- TODO: Verify collapsible hamburger menu -->
+            <a class="navbar-brand" href="{{ url_for('catalogHome') }}">ITDB</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <!--TODO: navbar color id-->
+            <div class="collapse navbar-collapse" id="navbarColor01">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                    <a class="nav-link" href="{{ url_for('catalogHome') }}">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">VR</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">AR</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Create New</a>
+                </li>
+                </ul>
+                <form class="form-inline">
+                    <button class="btn btn-outline-info my-2 my-sm-0" type="button"><a href="{{ url_for('loginPage') }}">Login</a></button>
+                </form>
+                </div>
         </nav>
-        <div class="container mb-3">
+
+        <div class="container-fluid">
             <div class="d-flex align-items-center justify-content-center header">
                 <h1>Immerse Tech Database</h1>
             </div>
@@ -17,7 +39,7 @@
                   <div class="row">
                       <div class="col-md-6">
                         <div class="tech-section">
-                          <h2 class="text-center my-3 py-4">Virtual Reality</h2>
+                          <h2 class="text-center my-3 py-4"><a href='{{ url_for('headsetCatalog', headset_type = "VR") }}'>Virtual Reality</a></h2>
                             <div class="row">
                                 <div class="col-md-3 pl-4">
                                     <div class="img-fluid">
@@ -88,4 +110,4 @@
             <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
             <script src="../static/bootstrap/js/bootstrap.min.js"></script>
     </div>
-{% endblock %}}
+{% endblock %}

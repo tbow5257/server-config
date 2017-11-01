@@ -1,5 +1,4 @@
 .header {
-    background-color: #fff200;
     height: 100px;
 }
 
@@ -17,5 +16,15 @@
     background-color: #00ffff;
 }
 
-.list-text {
+
+.body-background {
+    background-color: #1a1f24 !important;
+}
+
+h1 {
+    color: #ACACAC !important;
+}
+
+h2 {
+    color: #bfada4 !important;
 }
