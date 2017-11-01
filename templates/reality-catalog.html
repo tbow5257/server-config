@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="list-group">
+        <h2>Headsets</h2>
+            {% for device in headset %}
+            {% if device.type == specific_type %}
+                <a href="#" class="list-group-item list-group-item-action flex-column align-items-start active">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1">{{ device.name }}</h5>
+                        <small>${{ device.price }}</small>
+                    </div>
+                    <small>FOV {{ device.FOV }}.
+                    <a href='{{ url_for('editHeadset', headset_type = device.type, headset_id = device.id) }}'>Edit</a>
+                    - <a href='{{ url_for('deleteHeadset', headset_id = device.id, headset_type =device.type) }}'>Delete</a></small>
+                </a>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="list-group">
+            <h2>Experiences</h2>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

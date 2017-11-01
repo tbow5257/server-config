@@ -2,35 +2,7 @@
 {% block title %}Immersive Tech Homepage{% endblock %}
 {% block content %}
 
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <!-- TODO: Verify collapsible hamburger menu -->
-            <a class="navbar-brand" href="{{ url_for('catalogHome') }}">ITDB</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <!--TODO: navbar color id-->
-            <div class="collapse navbar-collapse" id="navbarColor01">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                    <a class="nav-link" href="{{ url_for('catalogHome') }}">Home <span class="sr-only">(current)</span></a>
-                    </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">VR</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">AR</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Create New</a>
-                </li>
-                </ul>
-                <form class="form-inline">
-                    <button class="btn btn-outline-info my-2 my-sm-0" type="button"><a href="{{ url_for('loginPage') }}">Login</a></button>
-                </form>
-                </div>
-        </nav>
-
-        <div class="container-fluid">
+     <div class="container-fluid">
             <div class="d-flex align-items-center justify-content-center header">
                 <h1>Immersive Tech Database</h1>
             </div>
@@ -38,9 +10,9 @@
             <div class="container">
                   <div class="row">
                       <div class="col-md-6">
-                        <div class="tech-section">
-                          <h2 class="text-center my-3 py-4"><a href='{{ url_for('headsetCatalog', headset_type = "VR") }}'>Virtual Reality</a></h2>
-                            <div class="row">
+                          <div class="tech-section">
+                            <h2 class="text-center my-3 py-4"><a href='{{ url_for('realityCatalog', headset_type = "VR") }}'>Virtual Reality</a></h2>
+                              <div class="row">
                                 <div class="col-md-3 pl-4">
                                     <div class="img-fluid">
                                         <img src="../static/images/vr_image.png" class="vr-image" alt="Image of VR Headset">
@@ -79,7 +51,7 @@
                       </div>
                     <div class="col-md-6">
                         <div class="tech-section">
-                            <h2 class="text-center my-3 py-4">Augmented Reality</h2>
+                            <h2 class="text-center my-3 py-4"><a href='{{ url_for('realityCatalog', headset_type = "AR") }}'>Augmented Reality</a></h2>
                             <div class="row">
                                 <div class="col-md-3 pl-5">
                                     <div class="img-fluid">
@@ -117,9 +89,8 @@
                         <h2 class="text-center"><a href='{{ url_for('newHeadset') }}'> Create new</a></h2>
                     </div>
                 </div>
-        </div>
             <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
             <script src="../static/bootstrap/js/bootstrap.min.js"></script>
-    </div>
+
 {% endblock %}

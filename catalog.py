@@ -191,9 +191,9 @@ def gdisconnect():
         return response
 
 @app.route('/<string:headset_type>/')
-def headsetCatalog(headset_type):
+def realityCatalog(headset_type):
     headset = session.query(Headset).all()
-    return render_template('headset-catalog.html', headset=headset)
+    return render_template('reality-catalog.html', headset=headset, specific_type=headset_type)
 
 @app.route('/<string:headset_type>/headset/<int:headset_id>/edit', methods=['GET', 'POST'])
 def editHeadset(headset_type, headset_id):
@@ -304,19 +304,6 @@ def deleteExperience(experience_type, experience_id):
         return redirect(url_for('catalogHome'))
     else:
         return render_template('delete-experience.html', experienceToDel=experienceToDel)
-
-@app.route('/ar/new/')
-def arEntryNew():
-    return render_template('ar-new.html')
-
-@app.route('/ar/edit/')
-def arEntryEdit():
-    return render_template('ar-edit.html')
-
-@app.route('/ar/delete/')
-def arEntryDelete():
-    return render_template('ar-edit.html')
-
 
 
 if __name__ == '__main__':
