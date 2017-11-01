@@ -13,12 +13,14 @@
 }
 
 .tech-section {
-    background-color: #00ffff;
+    background-color: #3A444F;
 }
 
 
 .body-background {
     background-color: #1a1f24 !important;
+    color: white !important;
+    #TODO: change font color later
 }
 
 h1 {

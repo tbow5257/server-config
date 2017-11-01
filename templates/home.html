@@ -32,7 +32,7 @@
 
         <div class="container-fluid">
             <div class="d-flex align-items-center justify-content-center header">
-                <h1>Immerse Tech Database</h1>
+                <h1>Immersive Tech Database</h1>
             </div>
         </div>
             <div class="container">
@@ -49,19 +49,25 @@
                             <div class="col-md-9">
                                <h3>VR Headsets:</h3>
                                     <div class="list-text">
-                                        {% set count=[1] %}
+                                        {% set count=[0] %}
                                         {% for device in headset if not device.type == "AR" %}
-                                            {#%- if count==3 %#}{#% break %#}{#% endif %#}
-                                                {% if count.append(count.pop() + 1) %}{% endif %} {# increment count by 1 #}
+                                            {% if count==[3] %}
+                                                <div class="row">
+                                                    <div class="col"><button type="button" class="btn btn-light float-right mr-3">See more</button>
+                                                    </div>
+                                                </div>{% break %}{% endif %}
+                                            {% if count.append(count.pop() + 1) %}{% endif %} {# increment count by 1 #}
                                               <h4>{{device.name}} - <a href='{{ url_for('editHeadset', headset_type = device.type, headset_id = device.id) }}'>Edit</a>
                                               - <a href='{{ url_for('deleteHeadset', headset_id = device.id, headset_type =device.type) }}'>Delete</a></h4>
-                                            {% print count %}
                                         {% endfor %}
                                     </div>
                                 <h3>VR Experiences</h3>
                                     <div class="list-text">
+                                    {% set count=[0] %}
                                     {% for program in experience %}
                                         {% if program.type == "VR" %}
+                                            {% if count==[3] %}{% break %}{% endif %}
+                                            {% if count.append(count.pop() + 1) %}{% endif %} {# increment count by 1 #}
                                             <h4>{{program.name}} - <a href='{{ url_for('editExperience', experience_id = program.id, headset_type = program.type) }}'>Edit</a>
                                             - <a href='{{ url_for('deleteExperience', experience_id = program.id, experience_type = program.type) }}'>Delete</a></h4>
                                         {% endif %}
@@ -82,13 +88,19 @@
                                 </div>
                             <div class="col-md-9">
                                <h3>AR Headsets:</h3>
+                                   {% set count=[0] %}
                                    {% for device in headset if not device.type == "VR" %}
+                                           {% if count==[3] %}{% break %}{% endif %}
+                                           {% if count.append(count.pop() + 1) %}{% endif %} {# increment count by 1 #}
                                            <h4>{{device.name}} - <a href='{{ url_for('editHeadset', headset_type = device.type, headset_id = device.id) }}'>Edit</a>
                                                - <a href='{{ url_for('deleteHeadset', headset_id = device.id, headset_type =device.type) }}'>Delete</a></h4>
                                    {% endfor %}
                                 <h3>AR Experiences</h3>
+                                    {% set count=[0] %}
                                     {% for program in experience %}
                                         {% if program.type == "AR" %}
+                                            {% if count==[3] %}{% break %}{% endif %}
+                                            {% if count.append(count.pop() + 1) %}{% endif %} {# increment count by 1 #}
                                             <h4>{{program.name}} - <a href='{{ url_for('editExperience', experience_id = program.id, headset_type = program.type) }}'>Edit</a>
                                             - <a href='{{ url_for('deleteExperience', experience_id = program.id, experience_type = program.type) }}'>Delete</a></h4>
                                         {% endif %}
