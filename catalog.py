@@ -18,6 +18,7 @@ import requests
 app = Flask(__name__)
 
 
+
 CLIENT_ID = json.loads(
     open('client_secrets.json', 'r').read())['web']['client_id']
 APPLICATION_NAME = "Immersive Tech Application"
@@ -37,7 +38,7 @@ def catalogHome():
 
 @app.route('/login')
 def loginPage():
-    state = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in xrange(32)) 
+    state = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in xrange(32))
     login_session['state'] = state
     return render_template('login.html', STATE = state)
 
@@ -319,6 +320,8 @@ def arEntryDelete():
 
 
 if __name__ == '__main__':
+    app.jinja_env.add_extension('jinja2.ext.loopcontrols')
+    app.config.from_object(__name__)
     app.secret_key = 'HrGlNQUEoCS_6If9--O4__N1'
     app.debug = True
     app.run(host='0.0.0.0', port=8000)

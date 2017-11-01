@@ -49,11 +49,13 @@
                             <div class="col-md-9">
                                <h3>VR Headsets:</h3>
                                     <div class="list-text">
-                                        {% for device in headset %}
-                                            {% if device.type == "VR" %}
+                                        {% set count=[1] %}
+                                        {% for device in headset if not device.type == "AR" %}
+                                            {#%- if count==3 %#}{#% break %#}{#% endif %#}
+                                                {% if count.append(count.pop() + 1) %}{% endif %} {# increment count by 1 #}
                                               <h4>{{device.name}} - <a href='{{ url_for('editHeadset', headset_type = device.type, headset_id = device.id) }}'>Edit</a>
                                               - <a href='{{ url_for('deleteHeadset', headset_id = device.id, headset_type =device.type) }}'>Delete</a></h4>
-                                            {% endif %}
+                                            {% print count %}
                                         {% endfor %}
                                     </div>
                                 <h3>VR Experiences</h3>
@@ -80,11 +82,9 @@
                                 </div>
                             <div class="col-md-9">
                                <h3>AR Headsets:</h3>
-                                   {% for device in headset %}
-                                       {% if device.type == "AR" %}
+                                   {% for device in headset if not device.type == "VR" %}
                                            <h4>{{device.name}} - <a href='{{ url_for('editHeadset', headset_type = device.type, headset_id = device.id) }}'>Edit</a>
                                                - <a href='{{ url_for('deleteHeadset', headset_id = device.id, headset_type =device.type) }}'>Delete</a></h4>
-                                       {% endif %}
                                    {% endfor %}
                                 <h3>AR Experiences</h3>
                                     {% for program in experience %}
