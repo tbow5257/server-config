@@ -30,3 +30,11 @@ h1 {
 h2 {
     color: #bfada4 !important;
 }
+
+.reality-row {
+    flex-direction: row;
+    -ms-flex-direction: row;
+}
+
+/* Always change mouse cursor when it hovers over links! */
+a[onclick], a:not([name]) { cursor: pointer }

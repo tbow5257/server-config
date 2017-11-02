@@ -193,7 +193,20 @@ def gdisconnect():
 @app.route('/<string:headset_type>/')
 def realityCatalog(headset_type):
     headset = session.query(Headset).all()
-    return render_template('reality-catalog.html', headset=headset, specific_type=headset_type)
+    experience = session.query(Experience).all()
+    return render_template('reality-catalog.html', headset=headset, specific_type=headset_type, experience=experience)
+
+@app.route('/<string:headset_type>/headset/<int:headset_id>/')
+def viewHeadset(headset_type, headset_id):
+    individualHeadset = session.query(Headset).filter_by(id=headset_id).one()
+    return render_template('headset.html', headset=individualHeadset, headset_type=headset_type)
+
+# Show an individual experience
+@app.route('/<string:experience_type>/experience/<int:experience_id>/')
+def viewExperience(experience_type, experience_id):
+    individualExperience = session.query(Experience).filter_by(id=experience_id).one()
+    return render_template('experience.html', experience=individualExperience, experience_type=experience_type)
+
 
 @app.route('/<string:headset_type>/headset/<int:headset_id>/edit', methods=['GET', 'POST'])
 def editHeadset(headset_type, headset_id):
