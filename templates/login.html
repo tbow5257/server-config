@@ -6,58 +6,116 @@
     <!--LOAD PRE-REQUISITES FOR GOOGLE SIGN IN -->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js">
     </script>
-
+    <!-- TODO: verify base.html matches this imported head content! -->
     <script src="//apis.google.com/js/platform.js?onload=start"> </script>
-
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Immersive Tech Page{% endblock %}</title>
+    <!-- Bootstrap -->
+    <link href="/static/styles.css" rel="stylesheet" media="screen">
+    <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" media="screen">
+    <link href="/static/bootstrap/css/bootstrap-grid.min.css" rel="stylesheet" type="text/css" media="screen">
+    <link href="/static/bootstrap/css/bootstrap-reboot.min.css" rel="stylesheet" type="text/css" media="screen">
     <!-- END PRE-REQUISITES FOR GOOGLE SIGN IN -->
 
 </head>
-<body>
-<h1>The current session state is {{STATE}}</h1>
-<!-- GOOGLE PLUS SIGN IN BUTTON-->
+<body class="body-background">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <!-- TODO: Verify collapsible hamburger menu -->
+        <a class="navbar-brand" href="{{ url_for('catalogHome') }}">ITDB</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <!--TODO: navbar color id-->
+        <div>
+        <div class="collapse navbar-collapse" id="navbarColor01">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                <a class="nav-link" href="{{ url_for('catalogHome') }}">Home <span class="sr-only">(current)</span></a>
+                </li>
+            <li class="nav-item">
+                <a class="nav-link" href='{{ url_for('realityCatalog', headset_type = "VR") }}'>VR</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href='{{ url_for('realityCatalog', headset_type = "AR") }}'>AR</a>
+            </li>
+            </ul>
+            <div class="btn-group">
+              <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Create New
+              </button>
+              <div class="dropdown-menu dropdown-menu-right">
+                <button class="dropdown-item" href='{{ url_for('realityCatalog', headset_type = "VR") }}' type="button">Headset</button>
+                <button class="dropdown-item" type="button">Experience</button>
+              </div>
+            </div>
+            </div>
+        </div>
+            <form class="form-inline ml-auto">
+                <a href="{{ url_for('loginPage') }}">
+                    <button class="btn btn-light my-2 my-sm-0" type="button">Login</button>
+                </a>
+            </form>
+            </div>
+    </nav>
+    <h1>The current session state is {{STATE}}</h1>
+    <!-- GOOGLE PLUS SIGN IN BUTTON-->
 
-<div id="signInButton">
-    <span class="g-signin"
-        data-scope="openid email"
-        data-clientid="1018713556366-9qbugc43jap9jn4p4b844pl4p1oeaelm.apps.googleusercontent.com"
-        data-redirecturi="postmessage"
-        data-accesstype="offline"
-        data-cookiepolicy="single_host_origin"
-        data-callback="signInCallback"
-        data-approvalprompt="force">
-    </span>
-</div>
+    <div id="signInButton">
+        <span class="g-signin"
+            data-scope="openid email"
+            data-clientid="1018713556366-9qbugc43jap9jn4p4b844pl4p1oeaelm.apps.googleusercontent.com"
+            data-redirecturi="postmessage"
+            data-accesstype="offline"
+            data-cookiepolicy="single_host_origin"
+            data-callback="signInCallback"
+            data-approvalprompt="force">
+        </span>
+    </div>
 
-<!--END GOOGLE PLUS SIGN IN BUTTON -->
-<script>
-function signInCallback(authResult) {
-  if (authResult['code']) {
-    // Hide the sign-in button now that the user is authorized
-    $('#signinButton').attr('style', 'display: none');
-    // Send the one-time-use code to the server, if the server responds, write a 'login successful' message to the web page and then redirect back to the main restaurants page
-    $.ajax({
-      type: 'POST',
-      url: '/gconnect?state={{STATE}}',
-      processData: false,
-      data: authResult['code'],
-      contentType: 'application/octet-stream; charset=utf-8',
-      success: function(result) {
-        // Handle or verify the server response if necessary.
-        if (result) {
-          $('#result').html('Login Successful!</br>'+ result + '</br>Redirecting...')
-         setTimeout(function() {
-          window.location.href = "../home";
-         }, 4000);
+    <div class = 'flash'>
+		      {% with messages = get_flashed_messages() %}
+      {% if messages %}
 
-      } else if (authResult['error']) {
-    console.log('There was an error: ' + authResult['error']);
-  } else {
-        $('#result').html('Failed to make a server-side call. Check your configuration and console.');
-         }
-      }
+        <ul>
+        {% for message in messages %}
+            <li> <strong> {{ message }} </strong> </li>
+        {% endfor %}
+        </ul>
+        {% endif %}
+    {% endwith %}
 
-  }); } }
-</script>
+    </div>
+
+    <!--END GOOGLE PLUS SIGN IN BUTTON -->
+    <script>
+    function signInCallback(authResult) {
+      if (authResult['code']) {
+        // Hide the sign-in button now that the user is authorized
+        $('#signinButton').attr('style', 'display: none');
+        // Send the one-time-use code to the server, if the server responds, write a 'login successful' message to the web page and then redirect back to the main restaurants page
+        $.ajax({
+          type: 'POST',
+          url: '/gconnect?state={{STATE}}',
+          processData: false,
+          data: authResult['code'],
+          contentType: 'application/octet-stream; charset=utf-8',
+          success: function(result) {
+            // Handle or verify the server response if necessary.
+            if (result) {
+              $('#result').html('Login Successful!</br>'+ result + '</br>Redirecting...')
+             setTimeout(function() {
+              window.location.href = "../home";
+             }, 4000);
+
+          } else if (authResult['error']) {
+        console.log('There was an error: ' + authResult['error']);
+      } else {
+            $('#result').html('Failed to make a server-side call. Check your configuration and console.');
+             }
+          }
+
+      }); } }
+    </script>
 
 
 </body>

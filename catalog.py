@@ -40,6 +40,8 @@ def catalogHome():
 def loginPage():
     state = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in xrange(32))
     login_session['state'] = state
+    if 'username' in login_session:
+        flash('You are logged in')
     return render_template('login.html', STATE = state)
 
 
