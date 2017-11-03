@@ -54,9 +54,12 @@ def viewHeadsetJSON(headset_type, headset_id):
 @app.route('/')
 @app.route('/home')
 def catalogHome():
+    is_login = 1
+    if 'username' not in login_session:
+        is_login = 0
     headset = session.query(Headset).all()
     experience = session.query(Experience).all()
-    return render_template('home.html', headset = headset, experience = experience)
+    return render_template('home.html', headset = headset, experience = experience, is_login=is_login)
 
 @app.route('/login')
 def loginPage():
@@ -256,6 +259,7 @@ def editHeadset(headset_type, headset_id):
     else:
         return render_template('edit-headset.html', headset = editedHeadset)
 
+#Edit an Experience
 @app.route('/<string:headset_type>/experience/<int:experience_id>/edit', methods=['GET', 'POST'])
 def editExperience(headset_type, experience_id):
     if 'username' not in login_session:
@@ -275,7 +279,7 @@ def editExperience(headset_type, experience_id):
         flash('Experience Edited Yo')
         return redirect(url_for('catalogHome'))
     else:
-        return render_template('edit-experience.html', experience = editedExperience,)
+        return render_template('edit-experience.html', editedExperience = editedExperience)
 
 @app.route('/headset/new/', methods=['GET', 'POST'])
 def newHeadset():
