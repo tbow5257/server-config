@@ -1,7 +1,6 @@
-
-from sqlalchemy import Column, ForeignKey, Integer, String, Table
+from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship, backref
+from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
 
 Base = declarative_base()
@@ -13,6 +12,16 @@ class User(Base):
     name = Column(String(250), nullable=False)
     email = Column(String(250), nullable=False)
     picture = Column(String(250))
+
+    @property
+    def serialize(self):
+        """Return object data in easily serializeable format"""
+        return {
+            'id': self.id,
+            'name': self.name,
+            'email': self.email,
+            'picture': self.picture,
+        }
 
 class Headset(Base):
     __tablename__ = 'headset'
@@ -48,6 +57,19 @@ class Headset(Base):
         User
     )
 
+    @property
+    def serialize(self):
+        """Return object data in easily serializeable format"""
+        return {
+            'type': self.type,
+            'name': self.name,
+            'price': self.price,
+            'FOV': self.FOV,
+            'additional_components': self.additional_components,
+            'id': self.id,
+            'user_id': self.user_id,
+        }
+
 
 class Experience(Base):
     __tablename__ = 'experience'
@@ -75,6 +97,18 @@ class Experience(Base):
     user = relationship(
         User
     )
+
+    @property
+    def serialize(self):
+        """Return object data in easily serializeable format"""
+        return {
+            'type': self.type,
+            'name': self.name,
+            'id': self.id,
+            'description': self.description,
+            'price': self.price,
+            'user_id': self.user_id,
+        }
 
 engine = create_engine('sqlite:///immersivecatalog.db')
 

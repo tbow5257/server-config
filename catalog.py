@@ -29,6 +29,28 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
+@app.route('/<string:experience_type>/experience/JSON/')
+def viewExperienceCollectionJSON(experience_type):
+    ExperienceCollection = session.query(Experience).filter(Experience.type==experience_type)
+    return jsonify(ExperienceCollection=[program.serialize for program in ExperienceCollection])
+
+#JSON endpoint for either VR or AR headsets
+@app.route('/<string:headset_type>/headset/JSON/')
+def viewHeadsetCollectionJSON(headset_type):
+    Headsetcollection = session.query(Headset).filter(Headset.type==headset_type)
+    return jsonify(Headsetcollection=[device.serialize for device in Headsetcollection])
+
+@app.route('/<string:experience_type>/experience/<int:experience_id>/JSON/')
+def viewExperienceJSON(experience_type, experience_id):
+    individualExperience = session.query(Experience).filter_by(id=experience_id).one()
+    return jsonify(individualExperience=individualExperience.serialize)
+
+@app.route('/<string:headset_type>/headset/<int:headset_id>/JSON/')
+def viewHeadsetJSON(headset_type, headset_id):
+    individualHeadset = session.query(Headset).filter_by(id=headset_id).one()
+    return jsonify(individualHeadset=individualHeadset.serialize)
+
+
 @app.route('/')
 @app.route('/home')
 def catalogHome():

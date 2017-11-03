@@ -35,5 +35,3 @@ h2 {
     -ms-flex-direction: row;
 }
 
-/* Always change mouse cursor when it hovers over links! */
-a[onclick], a:not([name]) { cursor: pointer }
