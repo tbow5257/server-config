@@ -107,8 +107,11 @@
             </div>
 
                 <div class="row">
-                    <div class="col align-self-center">
-                        <h2 class="text-center"><a href='{{ url_for('newHeadset') }}'> Create new</a></h2>
+                    <div class="mx-auto mt-4">
+                        <button type="button" class="btn btn-secondary" data-container="body" data-toggle="popover" data-placement="bottom"
+                                data-content="<a href='{{ url_for('newHeadset') }}'><h3>Headset</h3></a><br><a href='{{ url_for('newExperience') }}'><h3>Experience</h3></a>">
+                              Create New Entry
+                        </button>
                     </div>
                 </div>
 

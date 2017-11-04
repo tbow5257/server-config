@@ -52,6 +52,9 @@ def viewHeadsetJSON(headset_type, headset_id):
 
 
 @app.route('/')
+def rootRedirect():
+    return redirect('/home')
+
 @app.route('/home')
 def catalogHome():
     is_login = 1
