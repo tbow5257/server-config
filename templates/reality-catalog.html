@@ -1,54 +1,59 @@
 {% extends "base.html" %}
 {% block content %}
 
-<div class="container mt-4">
-    <div class="row">
-        <div class="reality-row container-fluid">
-        <div class="row"><h2>Headsets</h2></div>
-            <div class="row mb-3">
-            {% for device in headset %}
-            {% if device.type == specific_type %}
-                <div class="col-md-4 my-3">
-                    <a href='{{ url_for('viewHeadset', headset_type = device.type, headset_id = device.id) }}' class="list-group-item list-group-item-action flex-row align-items-start active">
-                    <div class="d-flex w-100 justify-content-between">
-                        <h5 class="mb-1">{{ device.name }}</h5>
-                        <small>${{ device.price }}</small>
-                    </div>
-                    <small>FOV {{ device.FOV }}.
-                    <a href='{{ url_for('editHeadset', headset_type = device.type, headset_id = device.id) }}'>Edit</a>
-                    - <a href='{{ url_for('deleteHeadset', headset_id = device.id, headset_type =device.type) }}'>Delete</a></small>
-                    </a>
-                </div>
-            {% endif %}
-            {% endfor %}
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="reality-row container-fluid">
-            <div class="row"><h2>Experiences</h2></div>
-            <div class="row mb-3">
-                {% for program in experience %}
-                {% if program.type == specific_type %}
-                    <div class="col-md-4 my-3">
-                        <a href='{{ url_for('viewExperience', experience_type = program.type, experience_id = program.id) }}' class="list-group-item list-group-item-action flex-row align-items-start active">
-                            <div class="d-flex w-100 justify-content-between">
-                                <h5 class="mb-1">{{ program.name }}</h5>
-                                <small>${{ program.price }}</small>
+    <div class="container mt-4">
+        <div class="row">
+            <div class="reality-row container-fluid">
+                <div class="row"><h2>Headsets</h2></div>
+                <div class="row mb-3">
+                    {% for device in headset %}
+                        {% if device.type == specific_type %}
+                            <div class="col-md-4 my-3">
+                                <a href='{{ url_for('viewHeadset', headset_type = device.type, headset_id = device.id) }}'
+                                   class="list-group-item list-group-item-action flex-row align-items-start active">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h5 class="mb-1">{{ device.name }}</h5>
+                                        <small>${{ device.price }}</small>
+                                    </div>
+                                    <small>FOV {{ device.FOV }}.
+                                        <a href='{{ url_for('editHeadset', headset_type = device.type, headset_id = device.id) }}'>Edit</a>
+                                        -
+                                        <a href='{{ url_for('deleteHeadset', headset_id = device.id, headset_type =device.type) }}'>Delete</a>
+                                    </small>
+                                </a>
                             </div>
-                            <small> {{ program.description }}.
-                                <a href='{{ url_for('editExperience', experience_id = program.id, headset_type = program.type) }}'>Edit</a>
-                                - <a href='{{ url_for('deleteExperience', experience_id = program.id, experience_type = program.type) }}'>Delete</a>
-                            </small>
-                        </a>
-                    </div>
-
-                {% endif %}
-                {% endfor %}
+                        {% endif %}
+                    {% endfor %}
+                </div>
             </div>
         </div>
-    </div>
+        <div class="row">
+            <div class="reality-row container-fluid">
+                <div class="row"><h2>Experiences</h2></div>
+                <div class="row mb-3">
+                    {% for program in experience %}
+                        {% if program.type == specific_type %}
+                            <div class="col-md-4 my-3">
+                                <a href='{{ url_for('viewExperience', experience_type = program.type, experience_id = program.id) }}'
+                                   class="list-group-item list-group-item-action flex-row align-items-start active">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h5 class="mb-1">{{ program.name }}</h5>
+                                        <small>${{ program.price }}</small>
+                                    </div>
+                                    <small> {{ program.description }}.
+                                        <a href='{{ url_for('editExperience', experience_id = program.id, headset_type = program.type) }}'>Edit</a>
+                                        -
+                                        <a href='{{ url_for('deleteExperience', experience_id = program.id, experience_type = program.type) }}'>Delete</a>
+                                    </small>
+                                </a>
+                            </div>
 
-</div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+    </div>
 
 {% endblock %}

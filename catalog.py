@@ -3,11 +3,12 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database_setup import Base, Headset, Experience, User
 
-#for google login
+# for google login
 from flask import session as login_session
-import random, string
+import random
+import string
 
-#gconnect
+# gconnect
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.client import FlowExchangeError
 import httplib2
@@ -17,33 +18,34 @@ import requests
 
 app = Flask(__name__)
 
-
-
 CLIENT_ID = json.loads(
     open('client_secrets.json', 'r').read())['web']['client_id']
 APPLICATION_NAME = "Immersive Tech Application"
-
 
 engine = create_engine('sqlite:///immersivecatalog.db')
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
+
 @app.route('/<string:experience_type>/experience/JSON/')
 def viewExperienceCollectionJSON(experience_type):
-    ExperienceCollection = session.query(Experience).filter(Experience.type==experience_type)
+    ExperienceCollection = session.query(Experience).filter(Experience.type == experience_type)
     return jsonify(ExperienceCollection=[program.serialize for program in ExperienceCollection])
 
-#JSON endpoint for either VR or AR headsets
+
+# JSON endpoint for either VR or AR headsets
 @app.route('/<string:headset_type>/headset/JSON/')
 def viewHeadsetCollectionJSON(headset_type):
-    Headsetcollection = session.query(Headset).filter(Headset.type==headset_type)
+    Headsetcollection = session.query(Headset).filter(Headset.type == headset_type)
     return jsonify(Headsetcollection=[device.serialize for device in Headsetcollection])
+
 
 @app.route('/<string:experience_type>/experience/<int:experience_id>/JSON/')
 def viewExperienceJSON(experience_type, experience_id):
     individualExperience = session.query(Experience).filter_by(id=experience_id).one()
     return jsonify(individualExperience=individualExperience.serialize)
+
 
 @app.route('/<string:headset_type>/headset/<int:headset_id>/JSON/')
 def viewHeadsetJSON(headset_type, headset_id):
@@ -55,14 +57,19 @@ def viewHeadsetJSON(headset_type, headset_id):
 def rootRedirect():
     return redirect('/home')
 
+
 @app.route('/home')
 def catalogHome():
-    is_login = 1
+    """
+    Displays homepage of site and loads database entries (limited to 3 max per category)
+    """
+    is_login = "username" in login_session
     if 'username' not in login_session:
         is_login = 0
     headset = session.query(Headset).all()
     experience = session.query(Experience).all()
-    return render_template('home.html', headset = headset, experience = experience, is_login=is_login)
+    return render_template('home.html', headset=headset, experience=experience, is_login=is_login)
+
 
 @app.route('/login')
 def loginPage():
@@ -70,7 +77,8 @@ def loginPage():
     login_session['state'] = state
     if 'username' in login_session:
         flash('You are logged in')
-    return render_template('login.html', STATE = state)
+    return render_template('login.html', STATE=state)
+
 
 # Log user out
 @app.route('/disconnect')
@@ -84,6 +92,7 @@ def disconnect():
         flash("You were not logged in")
         return redirect(url_for('catalogHome'))
 
+#Connect to Google account
 @app.route('/gconnect', methods=['POST'])
 def gconnect():
     # Validate state token
@@ -186,9 +195,11 @@ def createUser(login_session):
     user = session.query(User).filter_by(email=login_session['email']).one()
     return user.id
 
+
 def getUserInfo(user_id):
     user = session.query(User).filter_by(id=user_id).one()
     return user
+
 
 def getUserID(email):
     try:
@@ -198,7 +209,7 @@ def getUserID(email):
         return None
 
 
-    # DISCONNECT - Revoke a current user's token and reset their login_session
+# DISCONNECT - Revoke a current user's token and reset their login_session
 
 
 @app.route('/gdisconnect')
@@ -231,9 +242,10 @@ def gdisconnect():
         response.headers['Content-Type'] = 'application/json'
         return response
 
+
 @app.route('/<string:headset_type>/')
 def realityCatalog(headset_type):
-    is_login = 1
+    is_login = "username" in login_session
     if 'username' not in login_session:
         is_login = 0
     headset = session.query(Headset).all()
@@ -241,18 +253,20 @@ def realityCatalog(headset_type):
     return render_template('reality-catalog.html', headset=headset, specific_type=headset_type, experience=experience
                            , is_login=is_login)
 
+
 @app.route('/<string:headset_type>/headset/<int:headset_id>/')
 def viewHeadset(headset_type, headset_id):
-    is_login = 1
+    is_login = "username" in login_session
     if 'username' not in login_session:
         is_login = 0
     individualHeadset = session.query(Headset).filter_by(id=headset_id).one()
     return render_template('headset.html', headset=individualHeadset, headset_type=headset_type, is_login=is_login)
 
+
 # Show an individual experience
 @app.route('/<string:experience_type>/experience/<int:experience_id>/')
 def viewExperience(experience_type, experience_id):
-    is_login = 1
+    is_login = "username" in login_session
     if 'username' not in login_session:
         is_login = 0
     individualExperience = session.query(Experience).filter_by(id=experience_id).one()
@@ -262,11 +276,14 @@ def viewExperience(experience_type, experience_id):
 
 @app.route('/<string:headset_type>/headset/<int:headset_id>/edit', methods=['GET', 'POST'])
 def editHeadset(headset_type, headset_id):
-    is_login = 1
+    is_login = "username" in login_session
     if 'username' not in login_session:
         flash("You must login to make changes.")
         return redirect('/login')
     editedHeadset = session.query(Headset).filter_by(id=headset_id).one()
+    if editedHeadset.user_id != login_session['user_id']:
+        flash("You aren't authorized to edit this entry. Please create your own")
+        return redirect(url_for('catalogHome'))
     if request.method == 'POST':
         if request.form['type']:
             editedHeadset.type = request.form['type']
@@ -284,16 +301,20 @@ def editHeadset(headset_type, headset_id):
         return redirect(url_for('catalogHome'))
 
     else:
-        return render_template('edit-headset.html', headset = editedHeadset, is_login=is_login)
+        return render_template('edit-headset.html', headset=editedHeadset, is_login=is_login)
 
-#Edit an Experience
+
+# Edit an Experience
 @app.route('/<string:headset_type>/experience/<int:experience_id>/edit', methods=['GET', 'POST'])
 def editExperience(headset_type, experience_id):
-    is_login = 1
+    is_login = "username" in login_session
     if 'username' not in login_session:
         flash("You must login to make changes.")
         return redirect('/login')
     editedExperience = session.query(Experience).filter_by(id=experience_id).one()
+    if editedExperience.user_id != login_session['user_id']:
+        flash("You aren't authorized to edit this entry. Please create your own")
+        return redirect(url_for('catalogHome'))
     if request.method == 'POST':
         if request.form['name']:
             editedExperience.name = request.form['name']
@@ -308,14 +329,15 @@ def editExperience(headset_type, experience_id):
         flash('Experience Edited Yo')
         return redirect(url_for('catalogHome'))
     else:
-        return render_template('edit-experience.html', editedExperience = editedExperience, is_login=is_login)
+        return render_template('edit-experience.html', editedExperience=editedExperience, is_login=is_login)
+
 
 @app.route('/headset/new/', methods=['GET', 'POST'])
 def newHeadset():
     if 'username' not in login_session:
         flash("You must login to make changes.")
         return redirect('/login')
-    is_login = 1
+    is_login = "username" in login_session
     if request.method == 'POST':
         newHeadset = Headset(
             name=request.form['name'], type=request.form['type'],
@@ -329,12 +351,13 @@ def newHeadset():
     else:
         return render_template('new-headset.html', is_login=is_login)
 
+
 @app.route('/experience/new/', methods=['GET', 'POST'])
 def newExperience():
     if 'username' not in login_session:
         flash("You must login to make changes.")
         return redirect('/login')
-    is_login = 1
+    is_login = "username" in login_session
     if request.method == 'POST':
         newExperience = Experience(
             name=request.form['name'], type=request.form['type'],
@@ -347,39 +370,45 @@ def newExperience():
     else:
         return render_template('new-experience.html', is_login=is_login)
 
+
 @app.route('/<headset_type>/headset/<int:headset_id>/delete/', methods=['GET', 'POST'])
 def deleteHeadset(headset_id, headset_type):
+    is_login = "username" in login_session
     headsetToDelete = session.query(
         Headset).filter_by(id=headset_id).one()
     if 'username' not in login_session:
         flash("You must login to make changes.")
         return redirect('/login')
-    # if HeadsetToDelete.user_id != login_session['user_id']:
-    #    return "<script>function myFunction() {alert('You are not authorized to delete this restaurant. Please create your own restaurant in order to delete.');}</script><body onload='myFunction()'>"
+    if headsetToDelete.user_id != login_session['user_id']:
+        flash("You aren't authorized to edit this entry. Please create your own")
+        return redirect(url_for('catalogHome'))
     if request.method == 'POST':
         session.delete(headsetToDelete)
         flash('%s Successfully Deleted' % headsetToDelete.name)
         session.commit()
         return redirect(url_for('catalogHome'))
 
-    return render_template('delete-headset.html', headsetToDelete=headsetToDelete)
+    return render_template('delete-headset.html', headsetToDelete=headsetToDelete, is_login=is_login)
+
 
 @app.route('/<experience_type>/experience/<int:experience_id>/delete/', methods=['GET', 'POST'])
 def deleteExperience(experience_type, experience_id):
+    is_login = "username" in login_session
     experienceToDel = session.query(
         Experience).filter_by(id=experience_id).one()
     if 'username' not in login_session:
         flash("You must login to make changes.")
         return redirect('/login')
-    # if HeadsetToDelete.user_id != login_session['user_id']:
-    #    return "<script>function myFunction() {alert('You are not authorized to delete this restaurant. Please create your own restaurant in order to delete.');}</script><body onload='myFunction()'>"
+    if experienceToDel.user_id != login_session['user_id']:
+        flash("You aren't authorized to edit this entry. Please create your own")
+        return redirect(url_for('catalogHome'))
     if request.method == 'POST':
         session.delete(experienceToDel)
         flash('%s Successfully Deleted' % experienceToDel.name)
         session.commit()
         return redirect(url_for('catalogHome'))
     else:
-        return render_template('delete-experience.html', experienceToDel=experienceToDel)
+        return render_template('delete-experience.html', experienceToDel=experienceToDel, is_login = "username" in login_session)
 
 
 if __name__ == '__main__':

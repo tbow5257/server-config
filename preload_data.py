@@ -46,7 +46,7 @@ headset3 = Headset(user_id=2, type="VR", name="HTC Vive", price=600, FOV=110, ad
 session.add(headset3)
 session.commit()
 
-headset4= Headset(user_id=1, type="AR", name="Iphone 8", price=800, FOV=50, additional_components=None)
+headset4 = Headset(user_id=1, type="AR", name="Iphone 8", price=800, FOV=50, additional_components=None)
 
 session.add(headset4)
 session.commit()
@@ -56,12 +56,13 @@ headset5 = Headset(user_id=2, type="VR", name="FOVE", price=800, FOV=110, additi
 session.add(headset5)
 session.commit()
 
-headset6= Headset(user_id=1, type="AR", name="Magic Leap", price=1000, FOV=50, additional_components=None)
+headset6 = Headset(user_id=1, type="AR", name="Magic Leap", price=1000, FOV=50, additional_components=None)
 
 session.add(headset6)
 session.commit()
 
-headset7 = Headset(user_id=2, type="VR", name="Windows Mixed Reality Headset", price=449.99, FOV=95, additional_components=None)
+headset7 = Headset(user_id=2, type="VR", name="Windows Mixed Reality Headset", price=449.99, FOV=95,
+                   additional_components=None)
 
 session.add(headset7)
 session.commit()
@@ -70,9 +71,9 @@ headset8 = Headset(user_id=2, type="AR", name="Meta 2", price=1495.00, FOV=90, a
 
 session.add(headset8)
 
-
-#Experience examples
-experience1 = Experience(user_id=1, type="VR", name="Space Pirate Trainer", description="Sci-fi shooting gallery", price=14.99)
+# Experience examples
+experience1 = Experience(user_id=1, type="VR", name="Space Pirate Trainer", description="Sci-fi shooting gallery",
+                         price=14.99)
 
 session.add(experience1)
 session.commit()
@@ -82,12 +83,14 @@ experience2 = Experience(user_id=1, type="AR", name="Augment", description="Visu
 session.add(experience2)
 session.commit()
 
-experience3 = Experience(user_id=2, type="VR", name="Facebook Spaces", description="Hangout with friends in a virtual environment", price=None)
+experience3 = Experience(user_id=2, type="VR", name="Facebook Spaces",
+                         description="Hangout with friends in a virtual environment", price=None)
 
 session.add(experience3)
 session.commit()
 
-experience4 = Experience(user_id=1, type="AR", name="Snapchat", description="Share video and pictures with friends", price=None)
+experience4 = Experience(user_id=1, type="AR", name="Snapchat", description="Share video and pictures with friends",
+                         price=None)
 
 session.add(experience4)
 session.commit()
@@ -97,7 +100,8 @@ experience5 = Experience(user_id=1, type="VR", name="Accounting", description="J
 session.add(experience5)
 session.commit()
 
-experience6 = Experience(user_id=1, type="AR", name="IKEA Place", description="Look at 3D models of furniture in your home", price=None)
+experience6 = Experience(user_id=1, type="AR", name="IKEA Place",
+                         description="Look at 3D models of furniture in your home", price=None)
 
 session.add(experience6)
 session.commit()
@@ -107,7 +111,8 @@ experience7 = Experience(user_id=1, type="VR", name="Tethered", description="Fan
 session.add(experience7)
 session.commit()
 
-experience8 = Experience(user_id=1, type="AR", name="Star Wars Tabletop", description="Visualize Star Wars on your coffee table", price=None)
+experience8 = Experience(user_id=1, type="AR", name="Star Wars Tabletop",
+                         description="Visualize Star Wars on your coffee table", price=None)
 
 session.add(experience8)
 session.commit()

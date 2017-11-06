@@ -3,41 +3,43 @@
 {% block content %}
     <div class="container-fluid">
         <div class="row">
-			  	  <div class="mx-auto my-4">
-                        <H2>Name:</h2>
-                        <h1>{{headset.name}}</h1>
+            <div class="mx-auto my-4">
+                <H2>Name:</h2>
+                <h1>{{ headset.name }}</h1>
 
-                        <br>
-                        <h2>Type:</h2>
-                        <div class="radio">
-                            {% if headset.type == "VR"%}
-                                     <h1>VR</h1>
-                            {%endif%}
-                        </div>
-                        <div class="radio">
-                            {% if headset.type == "AR"%}
-                                <label>
-                                    <h1>AR</h1>
-                                </label>
-                            {%endif%}
-                        </div>
-                        <br>
+                <br>
+                <h2>Type:</h2>
+                <div class="radio">
+                    {% if headset.type == "VR" %}
+                        <h1>VR</h1>
+                    {% endif %}
+                </div>
+                <div class="radio">
+                    {% if headset.type == "AR" %}
+                        <label>
+                            <h1>AR</h1>
+                        </label>
+                    {% endif %}
+                </div>
+                <br>
 
-                        <h2>FOV:</h2>
-                        <h1>{{headset.FOV}}</h1>
-                        <br>
+                <h2>FOV:</h2>
+                <h1>{{ headset.FOV }}</h1>
+                <br>
 
-                        <h2>Additional Components:</h2>
-                        <h3>{{headset.additional_components}}</h3>
+                <h2>Additional Components:</h2>
+                <h3>{{ headset.additional_components }}</h3>
 
-                        <br>
-                        <h2>Price:</h2>
-                        <h1>{{headset.price}}</h1>
+                <br>
+                <h2>Price:</h2>
+                <h1>{{ headset.price }}</h1>
 
-                        <br>
-                        <h4><a href='{{ url_for('editHeadset', headset_id = headset.id, headset_type = headset.type) }}'>Edit</a>
-                            - <a href='{{ url_for('deleteHeadset', headset_id = headset.id, headset_type = headset.type) }}'>Delete</a></h4>
-                  </div>
+                <br>
+                <h4>
+                    <a href='{{ url_for('editHeadset', headset_id = headset.id, headset_type = headset.type) }}'>Edit</a>
+                    - <a href='{{ url_for('deleteHeadset', headset_id = headset.id, headset_type = headset.type) }}'>Delete</a>
+                </h4>
+            </div>
         </div>
     </div>
 {% endblock %}

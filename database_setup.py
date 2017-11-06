@@ -5,6 +5,7 @@ from sqlalchemy import create_engine
 
 Base = declarative_base()
 
+
 class User(Base):
     __tablename__ = 'user'
 
@@ -22,6 +23,7 @@ class User(Base):
             'email': self.email,
             'picture': self.picture,
         }
+
 
 class Headset(Base):
     __tablename__ = 'headset'
@@ -109,6 +111,7 @@ class Experience(Base):
             'price': self.price,
             'user_id': self.user_id,
         }
+
 
 engine = create_engine('sqlite:///immersivecatalog.db')
 

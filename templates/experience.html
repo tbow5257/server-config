@@ -4,37 +4,40 @@
 
     <div class="container-fluid">
         <div class="row">
-				<div class="mx-auto my-4">
-					<H2>Name:</h2>
-                    <h1>{{experience.name}}</h1>
+            <div class="mx-auto my-4">
+                <H2>Name:</h2>
+                <h1>{{ experience.name }}</h1>
 
-                    <br>
-                    <h2>Type:</h2>
-					<div class="radio">
-					    {% if experience.type == "VR"%}
-                                 <h1>VR</h1>
-                        {%endif%}
-					</div>
-					<div class="radio">
-					    {% if experience.type == "AR"%}
-                            <label>
-                                <h1>AR</h1>
-                            </label>
-                        {%endif%}
-                    </div>
-                    <br>
-
-                    <h2>Description:</h2>
-					<h3>{{experience.description}}</h3>
-
-                    <br>
-                    <h2>Price:</h2>
-					<h1>{{experience.price}}</h1>
-
-                    <br>
-                    <h4><a href='{{ url_for('editExperience', experience_id = experience.id, headset_type = experience.type) }}'>Edit</a>
-                        - <a href='{{ url_for('deleteExperience', experience_id = experience.id, experience_type = experience.type) }}'>Delete</a></h4>
+                <br>
+                <h2>Type:</h2>
+                <div class="radio">
+                    {% if experience.type == "VR" %}
+                        <h1>VR</h1>
+                    {% endif %}
                 </div>
+                <div class="radio">
+                    {% if experience.type == "AR" %}
+                        <label>
+                            <h1>AR</h1>
+                        </label>
+                    {% endif %}
+                </div>
+                <br>
+
+                <h2>Description:</h2>
+                <h3>{{ experience.description }}</h3>
+
+                <br>
+                <h2>Price:</h2>
+                <h1>{{ experience.price }}</h1>
+
+                <br>
+                <h4>
+                    <a href='{{ url_for('editExperience', experience_id = experience.id, headset_type = experience.type) }}'>Edit</a>
+                    - <a
+                        href='{{ url_for('deleteExperience', experience_id = experience.id, experience_type = experience.type) }}'>Delete</a>
+                </h4>
+            </div>
         </div>
     </div>
 
