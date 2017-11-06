@@ -30,7 +30,7 @@
         <div class="collapse navbar-collapse" id="navbarColor01">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                <a class="nav-link" href="{{ url_for('catalogHome') }}">Home <span class="sr-only">(current)</span></a>
+                <a class="nav-link" href="{{ url_for('catalogHome') }}">Home {% print response %}<span class="sr-only">(current)</span></a>
                 </li>
             <li class="nav-item">
                 <a class="nav-link" href='{{ url_for('realityCatalog', headset_type = "VR") }}'>VR</a>
@@ -39,50 +39,48 @@
                 <a class="nav-link" href='{{ url_for('realityCatalog', headset_type = "AR") }}'>AR</a>
             </li>
             </ul>
-            <div class="btn-group">
-              <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Create New
-              </button>
-              <div class="dropdown-menu dropdown-menu-right">
-                <button class="dropdown-item" href='{{ url_for('realityCatalog', headset_type = "VR") }}' type="button">Headset</button>
-                <button class="dropdown-item" type="button">Experience</button>
-              </div>
-            </div>
-            </div>
+
+        </div>
         </div>
             <form class="form-inline ml-auto">
                 <a href="{{ url_for('loginPage') }}">
                     <button class="btn btn-light my-2 my-sm-0" type="button">Login</button>
                 </a>
             </form>
-            </div>
     </nav>
-    <h1>The current session state is {{STATE}}</h1>
     <!-- GOOGLE PLUS SIGN IN BUTTON-->
-
-    <div id="signInButton">
-        <span class="g-signin"
-            data-scope="openid email"
-            data-clientid="1018713556366-9qbugc43jap9jn4p4b844pl4p1oeaelm.apps.googleusercontent.com"
-            data-redirecturi="postmessage"
-            data-accesstype="offline"
-            data-cookiepolicy="single_host_origin"
-            data-callback="signInCallback"
-            data-approvalprompt="force">
-        </span>
+    <div class="row">
+        <div class="mx-auto mt-3">
+            <h1>Login below</h1>
+        </div>
     </div>
-
+    <div class="row my-3">
+        <div class="mx-auto">
+            <div id="signInButton">
+                <span class="g-signin"
+                    data-scope="openid email"
+                    data-clientid="1018713556366-9qbugc43jap9jn4p4b844pl4p1oeaelm.apps.googleusercontent.com"
+                    data-redirecturi="postmessage"
+                    data-accesstype="offline"
+                    data-cookiepolicy="single_host_origin"
+                    data-callback="signInCallback"
+                    data-approvalprompt="force">
+                </span>
+            </div>
+        </div>
+    </div>
     <div id="result"></div>
 
     <div class = 'flash'>
 		      {% with messages = get_flashed_messages() %}
       {% if messages %}
-
+        <div class="mx-auto col-md-6">
         <ul>
         {% for message in messages %}
-            <li> <strong> {{ message }} </strong> </li>
+            <li> <h3> <strong> {{ message }} </strong> </h3> </li>
         {% endfor %}
         </ul>
+        </div>
         {% endif %}
     {% endwith %}
 
@@ -118,7 +116,6 @@
 
       }); } }
     </script>
-
 
 </body>
 </html>

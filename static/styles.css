@@ -35,3 +35,10 @@ h2 {
     -ms-flex-direction: row;
 }
 
+a {
+    color: #2A9FD6 !important;
+}
+
+.list-group-item.active {
+    color: #fff !important;
+}

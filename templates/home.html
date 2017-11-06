@@ -47,7 +47,8 @@
                                                 </div>
                                                 {% break %}{% endif %}
                                             {% if count.append(count.pop() + 1) %}{% endif %} {# increment count by 1 #}
-                                            <h4>{{program.name}} - <a href='{{ url_for('editExperience', experience_id = program.id, headset_type = program.type) }}'>Edit</a>
+                                            <h4><a href='{{ url_for('viewExperience', experience_type = program.type, experience_id = program.id) }}'>{{program.name}}</a>
+                                                - <a href='{{ url_for('editExperience', experience_id = program.id, headset_type = program.type) }}'>Edit</a>
                                             - <a href='{{ url_for('deleteExperience', experience_id = program.id, experience_type = program.type) }}'>Delete</a></h4>
                                         {% endif %}
                                     {% endfor %}
@@ -78,8 +79,10 @@
                                                 </div>
                                                </div>{% break %}{% endif %}
                                            {% if count.append(count.pop() + 1) %}{% endif %} {# increment count by 1 #}
-                                           <h4>{{device.name}} - <a href='{{ url_for('editHeadset', headset_type = device.type, headset_id = device.id) }}'>Edit</a>
-                                               - <a href='{{ url_for('deleteHeadset', headset_id = device.id, headset_type =device.type) }}'>Delete</a></h4>
+                                       <h4><a href='{{ url_for('viewHeadset', headset_type = device.type, headset_id = device.id) }}'>{{device.name}} </a>
+                                               - <a href='{{ url_for('editHeadset', headset_type = device.type, headset_id = device.id) }}'>Edit</a>
+                                               - <a href='{{ url_for('deleteHeadset', headset_id = device.id, headset_type =device.type) }}'>Delete</a>
+                                       </h4>
                                    {% endfor %}
                                 </div>
                                 <div class="mb-4">
@@ -94,7 +97,8 @@
                                                </div>
                                                 {% break %}{% endif %}
                                             {% if count.append(count.pop() + 1) %}{% endif %} {# increment count by 1 #}
-                                            <h4>{{program.name}} - <a href='{{ url_for('editExperience', experience_id = program.id, headset_type = program.type) }}'>Edit</a>
+                                            <h4><a href='{{ url_for('viewExperience', experience_type = program.type, experience_id = program.id) }}'>{{program.name}} </a>
+                                                - <a href='{{ url_for('editExperience', experience_id = program.id, headset_type = program.type) }}'>Edit</a>
                                             - <a href='{{ url_for('deleteExperience', experience_id = program.id, experience_type = program.type) }}'>Delete</a></h4>
                                         {% endif %}
                                     {% endfor %}
@@ -107,12 +111,25 @@
             </div>
 
                 <div class="row">
-                    <div class="mx-auto mt-4">
+                    <div class="mx-auto my-4">
                         <button type="button" class="btn btn-secondary" data-container="body" data-toggle="popover" data-placement="bottom"
                                 data-content="<a href='{{ url_for('newHeadset') }}'><h3>Headset</h3></a><br><a href='{{ url_for('newExperience') }}'><h3>Experience</h3></a>">
                               Create New Entry
                         </button>
                     </div>
                 </div>
+                <div class="row">
+                    <div class = 'flash mx-auto'>
+                          {% with messages = get_flashed_messages() %}
+                              {% if messages %}
+                                <ul>
+                                    {% for message in messages %}
+                                    <li> <h2> <strong> {{ message }} </strong></h2> </li>
+                                    {% endfor %}
+                                </ul>
+                                {% endif %}
+                        {% endwith %}
+                </div>
+
 
 {% endblock %}

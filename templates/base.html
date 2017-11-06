@@ -49,12 +49,11 @@
                     </a>
                 {% endif %}
                 {% if is_login==1 %}
-                    <a href="{{ url_for('loginPage') }}">
+                    <a href="{{ url_for('disconnect') }}">
                         <button class="btn btn-light my-2 my-sm-0" type="button">Logout</button>
                     </a>
                 {% endif %}
             </form>
-            </div>
     </nav>
     {% block content %}
     {% endblock %}

@@ -72,6 +72,17 @@ def loginPage():
         flash('You are logged in')
     return render_template('login.html', STATE = state)
 
+# Log user out
+@app.route('/disconnect')
+def disconnect():
+    if 'provider' in login_session:
+        if login_session['provider'] == 'google':
+            gdisconnect()
+            flash("You have successfully been logged out.")
+            return redirect(url_for('catalogHome'))
+    else:
+        flash("You were not logged in")
+        return redirect(url_for('catalogHome'))
 
 @app.route('/gconnect', methods=['POST'])
 def gconnect():
@@ -222,25 +233,38 @@ def gdisconnect():
 
 @app.route('/<string:headset_type>/')
 def realityCatalog(headset_type):
+    is_login = 1
+    if 'username' not in login_session:
+        is_login = 0
     headset = session.query(Headset).all()
     experience = session.query(Experience).all()
-    return render_template('reality-catalog.html', headset=headset, specific_type=headset_type, experience=experience)
+    return render_template('reality-catalog.html', headset=headset, specific_type=headset_type, experience=experience
+                           , is_login=is_login)
 
 @app.route('/<string:headset_type>/headset/<int:headset_id>/')
 def viewHeadset(headset_type, headset_id):
+    is_login = 1
+    if 'username' not in login_session:
+        is_login = 0
     individualHeadset = session.query(Headset).filter_by(id=headset_id).one()
-    return render_template('headset.html', headset=individualHeadset, headset_type=headset_type)
+    return render_template('headset.html', headset=individualHeadset, headset_type=headset_type, is_login=is_login)
 
 # Show an individual experience
 @app.route('/<string:experience_type>/experience/<int:experience_id>/')
 def viewExperience(experience_type, experience_id):
+    is_login = 1
+    if 'username' not in login_session:
+        is_login = 0
     individualExperience = session.query(Experience).filter_by(id=experience_id).one()
-    return render_template('experience.html', experience=individualExperience, experience_type=experience_type)
+    return render_template('experience.html', experience=individualExperience, experience_type=experience_type
+                           , is_login=is_login)
 
 
 @app.route('/<string:headset_type>/headset/<int:headset_id>/edit', methods=['GET', 'POST'])
 def editHeadset(headset_type, headset_id):
+    is_login = 1
     if 'username' not in login_session:
+        flash("You must login to make changes.")
         return redirect('/login')
     editedHeadset = session.query(Headset).filter_by(id=headset_id).one()
     if request.method == 'POST':
@@ -260,12 +284,14 @@ def editHeadset(headset_type, headset_id):
         return redirect(url_for('catalogHome'))
 
     else:
-        return render_template('edit-headset.html', headset = editedHeadset)
+        return render_template('edit-headset.html', headset = editedHeadset, is_login=is_login)
 
 #Edit an Experience
 @app.route('/<string:headset_type>/experience/<int:experience_id>/edit', methods=['GET', 'POST'])
 def editExperience(headset_type, experience_id):
+    is_login = 1
     if 'username' not in login_session:
+        flash("You must login to make changes.")
         return redirect('/login')
     editedExperience = session.query(Experience).filter_by(id=experience_id).one()
     if request.method == 'POST':
@@ -282,12 +308,14 @@ def editExperience(headset_type, experience_id):
         flash('Experience Edited Yo')
         return redirect(url_for('catalogHome'))
     else:
-        return render_template('edit-experience.html', editedExperience = editedExperience)
+        return render_template('edit-experience.html', editedExperience = editedExperience, is_login=is_login)
 
 @app.route('/headset/new/', methods=['GET', 'POST'])
 def newHeadset():
     if 'username' not in login_session:
+        flash("You must login to make changes.")
         return redirect('/login')
+    is_login = 1
     if request.method == 'POST':
         newHeadset = Headset(
             name=request.form['name'], type=request.form['type'],
@@ -299,12 +327,14 @@ def newHeadset():
         session.commit()
         return redirect(url_for('catalogHome'))
     else:
-        return render_template('new-headset.html')
+        return render_template('new-headset.html', is_login=is_login)
 
 @app.route('/experience/new/', methods=['GET', 'POST'])
 def newExperience():
     if 'username' not in login_session:
+        flash("You must login to make changes.")
         return redirect('/login')
+    is_login = 1
     if request.method == 'POST':
         newExperience = Experience(
             name=request.form['name'], type=request.form['type'],
@@ -315,13 +345,14 @@ def newExperience():
         session.commit()
         return redirect(url_for('catalogHome'))
     else:
-        return render_template('new-experience.html')
+        return render_template('new-experience.html', is_login=is_login)
 
 @app.route('/<headset_type>/headset/<int:headset_id>/delete/', methods=['GET', 'POST'])
 def deleteHeadset(headset_id, headset_type):
     headsetToDelete = session.query(
         Headset).filter_by(id=headset_id).one()
     if 'username' not in login_session:
+        flash("You must login to make changes.")
         return redirect('/login')
     # if HeadsetToDelete.user_id != login_session['user_id']:
     #    return "<script>function myFunction() {alert('You are not authorized to delete this restaurant. Please create your own restaurant in order to delete.');}</script><body onload='myFunction()'>"
@@ -338,6 +369,7 @@ def deleteExperience(experience_type, experience_id):
     experienceToDel = session.query(
         Experience).filter_by(id=experience_id).one()
     if 'username' not in login_session:
+        flash("You must login to make changes.")
         return redirect('/login')
     # if HeadsetToDelete.user_id != login_session['user_id']:
     #    return "<script>function myFunction() {alert('You are not authorized to delete this restaurant. Please create your own restaurant in order to delete.');}</script><body onload='myFunction()'>"
