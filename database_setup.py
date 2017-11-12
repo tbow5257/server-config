@@ -113,6 +113,6 @@ class Experience(Base):
         }
 
 
-engine = create_engine('sqlite:///immersivecatalog.db')
+engine = create_engine('postgresql:///immersivecatalog.db')
 
 Base.metadata.create_all(engine)

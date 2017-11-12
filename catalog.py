@@ -7,7 +7,7 @@ from database_setup import Base, Headset, Experience, User
 from flask import session as login_session
 import random
 import string
-
+import os
 # gconnect
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.client import FlowExchangeError
@@ -17,12 +17,14 @@ from flask import make_response
 import requests
 
 app = Flask(__name__)
+THIS_FOLDER = os.path.dirname(os.path.abspath(__file__))
+my_file = os.path.join(THIS_FOLDER, 'client_secrets.json')
 
 CLIENT_ID = json.loads(
-    open('client_secrets.json', 'r').read())['web']['client_id']
+    open(my_file, 'r').read())['web']['client_id']
 APPLICATION_NAME = "Immersive Tech Application"
 
-engine = create_engine('sqlite:///immersivecatalog.db')
+engine = create_engine('postgresql:///immersivecatalog.db')
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
@@ -288,7 +290,7 @@ def editHeadset(headset_type, headset_id):
         if request.form['type']:
             editedHeadset.type = request.form['type']
         if request.form['name']:
-            editedHeadset.name = request.form['name']
+            editedHeadsey.name = request.form['name']
         if request.form['price']:
             editedHeadset.price = request.form['price']
         if request.form['FOV']:
