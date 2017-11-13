@@ -1,24 +1,61 @@
-Future Reality Catalog Application
-=============
+Udacity Linux Server Configuration Project
+==========================================
+Private IP Address: 172.26.0.221
+Public IP Address/App URL: 50.112.72.208
+SSH Port is 2200.
 
-###Built with Flask backend and Sqlite3 database
+The software that we have downloaded include: flask, packaging, oauth2client, redis, passlib, flask-httpauth, sqlalchemy, psycopg2, bleach, requests.
 
-####Running the project:
+In order to ssh into the application using a OSx/Linux distro, you would use the command sudo ssh -i theSecretKey.pub grader@50.112.72.208 -p 2200 with the password being blank. 
 
-1. Setup the database first by running `database_setup.py` located in the root folder.
-2. Add the pre-written database entries by running `preload_data.py` 
-3. Begin the web server by running `catalog.py`
-4. Using a web browser of your choice, navigate to `localhost:8000` to see the website
+The application is located in /var/www/html/reality-catalog.
 
-####Using JSON Endpoints
+For the grader user we configured the SSH by using:
+  sudo chmod 700 /home/grader/.ssh.
+  sudo chmod 644 /home/grader/.ssh/authorized_keys
+while placing the public key in the authorized_keys file.
+We also changed the owner from root to grader using sudo:
+  chown -R grader:grader /home/grader/.ssh
 
-JSON endpoints are available for all DB objects, including groups.
+For the SSH Port we changed it from 22 to 2200 in lightsail as well as the file /etc/ssh/sshd_config by using the command:
+sudo vim /etc/ssh/sshd_config and changing the port number.
 
-Simply define whether AR or VR, then Experience or Headset to receive a list:
-`localhost:8000/VR/experience/JSON/`
-`localhost:8000/AR/headset/JSON/`
+This allows you to ssh using:
+  sudo ssh -i privateKey.pub grader@50.112.72.208 -p 2200 
 
-For individual items, use the ID number followed by `/JSON/`
-`localhost:8000/VR/experience/3/JSON`
-`localhost:8000/AR/headset/2/JSON`
+the server was configured so that the root user can only be accessed internally by using the command: 
+  sudo vim /etc/ssh/sshd_config. changed PermitRootLogin line "no".
 
+The user grader was created and and an ssh-keygen pairing was given in order to remote as the grader. We changed the apache configurations in order to host our web application with the configurations below:
+
+<VirtualHost *:80>
+	DocumentRoot /var/www/html/reality-catalog
+
+
+
+	ErrorLog ${APACHE_LOG_DIR}/error.log
+	CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+ 	WSGIDaemonProcess catalog user=ubuntu group=ubuntu threads=5 python-home=/var/www/html/reality-catalog python-path=/usr/local/lib/python2.7/site-packages
+	WSGIScriptAlias / /var/www/html/reality-catalog/catalog.wsgi
+	<Directory /var/www/html/reality-catalog>
+		AllowOverride none
+        	#WSGIProcessGroup catalog
+        	WSGIApplicationGroup %{GLOBAL}
+        	WSGIScriptReloading On
+    		Require all granted
+	</Directory>
+</VirtualHost>
+
+Here are a list of some of the 3rd party resources used to complete the project:
+https://www.jakowicz.com/flask-apache-wsgi/
+https://www.ssh.com/ssh/host-key
+https://www.linode.com/docs/security/use-public-key-authentication-with-ssh
+https://www.digitalocean.com/community/questions/ubuntu-16-04-creating-new-user-and-adding-ssh-keys
+https://support.rackspace.com/how-to/logging-in-with-an-ssh-private-key-on-linuxmac/
+https://www.fullstackpython.com/blog/ssh-keys-ubuntu-linux.html
+https://git-scm.com/book/en/v2/Git-on-the-Server-Generating-Your-SSH-Public-Key
+https://mediatemple.net/community/products/dv/204403684/connecting-via-ssh-to-your-server
+https://www.digitalocean.com/community/questions/error-permission-denied-publickey-when-i-try-to-ssh
+http://flask.pocoo.org/docs/0.12/deploying/mod_wsgi/
+A lot of stackoverflow links were looked at in the course of the project to configure wsgi correctly.
