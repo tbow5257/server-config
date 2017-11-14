@@ -10,6 +10,11 @@ In order to ssh into the application using a OSx/Linux distro, you would use the
 
 The application is located in /var/www/html/reality-catalog.
 <h3> Grader </h3>
+
+For grader login, please use command:
+
+ssh -i grader_key.txt grader@50.112.72.208 -p 2200
+
 For the Grader user I configured the SSH by using:
   sudo chmod 700 /home/grader/.ssh.
   sudo chmod 644 /home/grader/.ssh/authorized_keys
