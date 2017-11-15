@@ -9,7 +9,8 @@ The software that I have downloaded include: flask, packaging, oauth2client, red
 In order to ssh into the application using a OSx/Linux distro, you would use the command sudo ssh -i theSecretKey.pub grader@50.112.72.208 -p 2200 with the password being blank. 
 
 The application is located in /var/www/html/reality-catalog.
-<h3> Grader </h3>
+
+### Grader 
 
 For grader login, please use command:
 
@@ -22,7 +23,7 @@ while placing the public key in the authorized_keys file.
 I also changed the owner from root to grader using sudo:
   chown -R grader:grader /home/grader/.ssh
 
-<h3> Configuration </h3>
+### Configuration
 For the SSH Port I changed it from 22 to 2200 in lightsail as well as the file /etc/ssh/sshd_config by using the command:
 sudo vim /etc/ssh/sshd_config and changing the port number.
 
@@ -53,7 +54,7 @@ The user grader was created and and an ssh-keygen pairing was given in order to 
 	</Directory>
 </VirtualHost>
 
-<h3> List of Resources </h3>
+### List of Resources 
 Here are a list of some of the 3rd party resources used to complete the project: <br />
 https://www.jakowicz.com/flask-apache-wsgi/ <br />
 https://www.ssh.com/ssh/host-key <br />
